@@ -154,3 +154,47 @@ double muGoldenSection(double a1, double b1) {
     double t = (sqrt(5.0) - 1.0) / 2.0;
     return a1 + t * abs(b1 - a1);
 }
+/**
+ * Функция получения апроксимированного минимума функции одной переменной
+ * Основан на симметрии золотого сечения
+ * @param a1 - левый конец локализованого интервала
+ * @param b1 - правый конец локализованого интервала
+ * @param f  - функция от одной переменной
+ * @param m - количество итераций
+ * @param eps - точность
+ * @return - апроксмированный минимум
+ */
+double goldenSectionNum2(double a1, double b1, double (*f)(double), double m, double eps) {
+    // начальный этап
+    double x1 = lambdaGoldenSection(a1, b1), x2, f1, f2;
+    int k = 1;
+    // основной этап
+    // Сокращение текущего интервала локализации
+    do {
+        x2 = b1 + a1 - x1;
+        f1 = f(x1);
+        f2 = f(x2);
+        std::cout << "k: " << k
+                  << " a1: " << a1
+                  << " b1: " << b1
+                  << " x1: " << x1
+                  << " x2: " << x2
+                  << " f1: " << f1
+                  << " f2: " << f2
+                  << std::endl;
+        if (x1 < x2 && f1 < f2) {
+            b1 = x2;
+        } else if (x1 < x2 && f1 > f2) {
+            a1 = x1;
+            x1 = x2;
+        } else if (x1 > x2 && f1 < f2) {
+            a1 = x2;
+        } else if (x1 > x2 && f1 > f2) {
+            b1 = x1;
+            x1 = x2;
+        }
+        k++;
+    } while(k <= m && abs(b1 - a1) > eps);
+
+    return (a1 + b1) / 2.0;
+}

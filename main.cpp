@@ -9,7 +9,9 @@ int main() {
     std::cout << "a1: " << a1 << " b1: " << b1 << std::endl;
     double x_ = dichotomy(a1, b1, f, 1e-5);
     std::cout << "x_: " << x_ << " f(x_): " << f(x_) << std::endl;
-    x_ = goldenSectionNum1(a1, b1, f);
+    x_ = goldenSectionNum1(a1, b1, f, 10, 1e-7);
+    std::cout << "x_: " << x_ << " f(x_): " << f(x_) << std::endl;
+    x_ = goldenSectionNum2(a1, b1, f, 10, 1e-7);
     std::cout << "x_: " << x_ << " f(x_): " << f(x_) << std::endl;
     return 0;
 }
