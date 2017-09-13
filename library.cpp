@@ -315,3 +315,81 @@ double methodFibonacci2(double a1, double b1, double (*f)(double), double Ln, do
     } while (k < n);
     return x1;
 }
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Позволяет найти аппроксимирующий минимум при любом расстоянии между точками, но из за
+ * разности кв. точность храмает
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios1EI(double a, double b, double c, double (*f)(double)) {
+    double fa = f(a), fb = f(b), fc = f(c);
+    double aa = a * a, bb = b * b, cc = c * c;
+    return 0.5 * (fa * (bb - cc) + fb * (cc - aa) + fc * (aa - bb)) / (fa * (b - c) + fb * (c - a) + fc * (a - b));
+}
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Более приближенное, чем calculatedRatios1EI.
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios2EI(double a, double b, double c, double (*f)(double)) {
+    double fa = f(a), fb = f(b), fc = f(c);
+    return (a + b) / 2 + 0.5 * (fa - fb) * (fa - fb) * (b - c) * (c - a) / (fa * (b - c) + fb * (c - a) + fc * (a - b));
+}
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Формула Брента построенная в предположении, что выполняется требование,
+ * Fa >= Fb <= Fc, b принадлежит [a, c]
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios3EI(double a, double b, double c, double (*f)(double)) {
+    double fa = f(a), fb = f(b), fc = f(c);
+    return b + 0.5 * ((b - a) * (b - a) * (fb - fc) - (b - c) * (b - c) * (fb - fa)) / ((b - a) * (fb - fc) - (b - c) * (fb - fa));
+}
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Вытекает из calculatedRatios3EI, при |b - a| = |c - b|
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios4EI(double a, double b, double c, double (*f)(double)) {
+    double fa = f(a), fb = f(b), fc = f(c);
+    return b + 0.5 * (b - a) * (fa - fc) / (fa - 2 * fb + fc);
+}
+
+/**
+ * Алгоритм Экстрополяции - интерполяции.
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param eps - точность приближения
+ * @return аппроксимированный минимум
+ */
+double a1ei(double a1, double b1, double (*f)(double), double eps) {
+    double x1 = (a1 + b1) / 2, d;
+    double h = 0.01 * abs(x1);
+    int k = 1;
+    while (true) {
+        d = calculatedRatios2EI(a1, x1, b1, f);
+        if (abs(1 - d / x1) <= eps && abs(1 - f(d) / f(x1)) <= eps) {
+            return (x1 + d) / 2;
+        }
+    }
+}

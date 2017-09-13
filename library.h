@@ -99,4 +99,59 @@ double methodFibonacci1(double a1, double b1, double (*f)(double), double Ln);
  * @return аппроксимированный минимум
  */
 double methodFibonacci2(double a1, double b1, double (*f)(double), double Ln, double eps);
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Позволяет найти аппроксимирующий минимум при любом расстоянии между точками, но из за
+ * разности кв. точность храмает
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios1EI(double a, double b, double c, double (*f)(double));
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Более приближенное, чем calculatedRatios1EI.
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios2EI(double a, double b, double c, double (*f)(double));
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Формула Брента построенная в предположении, что выполняется требование,
+ * Fa >= Fb <= Fc, b принадлежит [a, c]
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios3EI(double a, double b, double c, double (*f)(double));
+
+/**
+ * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
+ * Вытекает из calculatedRatios3EI, при |b - a| = |c - b|
+ * @param a
+ * @param b
+ * @param c
+ * @param f
+ * @return аппроксимирующий минимум
+ */
+double calculatedRatios4EI(double a, double b, double c, double (*f)(double));
+
+/**
+ * Алгоритм Экстрополяции - интерполяции.
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param eps - точность приближения
+ * @return аппроксимированный минимум
+ */
+double a1ei(double a1, double b1, double (*f)(double), double eps);
 #endif

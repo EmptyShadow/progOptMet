@@ -18,6 +18,8 @@ int main() {
     printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
     x_ = methodFibonacci2(a1, b1, f, 1e-7, 1e-7);
     printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
+    x_ = a1ei(a1, b1, f, 1e-7);
+    printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
 
     return 0;
 }
