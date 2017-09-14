@@ -6,20 +6,20 @@ double f(double x);
 int main() {
     double a1, b1;
     swenn(4, a1, b1, f);
-    printf("a1: %0.31f; b1: %0.31f\n\n", a1, b1);
+    printf("Swenn:\na1: %0.31f; b1: %0.31f\n\n", a1, b1);
     double x_;
     x_ = dichotomy(a1, b1, f, 1e-5);
-    printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
+    printf("Dichotomy:\nx_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
     x_ = goldenSectionNum1(a1, b1, f, 10, 1e-7);
-    printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
+    printf("GoldenSectionNum1:\nx_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
     x_ = goldenSectionNum2(a1, b1, f, 10, 1e-7);
-    printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
+    printf("GoldenSectionNum2:\nx_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
     x_ = methodFibonacci1(a1, b1, f, 1e-7);
-    printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
+    printf("methodFibonacci1:\nx_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
     x_ = methodFibonacci2(a1, b1, f, 1e-7, 1e-7);
-    printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
+    printf("methodFibonacci2:\nx_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
     x_ = a1ei(a1, b1, f, 1e-7);
-    printf("x_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
+    printf("A1EI:\nx_: %0.31f; f(x_): %0.31f\n\n", x_, f(x_));
 
     return 0;
 }

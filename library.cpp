@@ -343,7 +343,7 @@ double calculatedRatios1EI(double a, double b, double c, double (*f)(double)) {
  */
 double calculatedRatios2EI(double a, double b, double c, double (*f)(double)) {
     double fa = f(a), fb = f(b), fc = f(c);
-    return (a + b) / 2 + 0.5 * (fa - fb) * (fa - fb) * (b - c) * (c - a) / (fa * (b - c) + fb * (c - a) + fc * (a - b));
+    return (a + b) / 2 + 0.5 * (fa - fb) * (b - c) * (c - a) / (fa * (b - c) + fb * (c - a) + fc * (a - b));
 }
 
 /**
@@ -391,5 +391,6 @@ double a1ei(double a1, double b1, double (*f)(double), double eps) {
         if (abs(1 - d / x1) <= eps && abs(1 - f(d) / f(x1)) <= eps) {
             return (x1 + d) / 2;
         }
+        x1 = d;
     }
 }
