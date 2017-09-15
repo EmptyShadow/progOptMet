@@ -30,7 +30,7 @@ void intervalNormalization(double &a, double &b);
  * @param eps - окресность центральной точки
  * @return аппроксимированый минимум
  */
-double dichotomy(double a1, double b1, double (*f)(double), double eps = 1e-7);
+double dichotomy(double &a1, double &b1, double (*f)(double), double eps = 1e-7);
 
 /**
  * Функция получения апроксимированного минимума функции одной переменной
@@ -41,7 +41,7 @@ double dichotomy(double a1, double b1, double (*f)(double), double eps = 1e-7);
  * @param eps - точность
  * @return - аппроксмированный минимум
  */
-double goldenSectionNum1(double a1, double b1, double (*f)(double), double m = 20, double eps = 1e-7);
+double goldenSectionNum1(double &a1, double &b1, double (*f)(double), double m = 20, double eps = 1e-7);
 /**
  * Функция получения левого золотого числа
  * @param a1 - левый конец локализованого интервала
@@ -66,7 +66,7 @@ double muGoldenSection(double a1, double b1);
  * @param eps - точность
  * @return - аппроксмированный минимум
  */
-double goldenSectionNum2(double a1, double b1, double (*f)(double), double m = 20, double eps = 1e-7);
+double goldenSectionNum2(double &a1, double &b1, double (*f)(double), double m = 20, double eps = 1e-7);
 
 /**
  * Функция вычисления n-ого числа Фибоначчи
@@ -89,7 +89,7 @@ double getPrevNumberFibonacci(double fn, int &n);
  * @param eps - последний интервал, определяющий точность приближения
  * @return аппроксимированный минимум
  */
-double methodFibonacci1(double a1, double b1, double (*f)(double), double Ln);
+double methodFibonacci1(double &a1, double &b1, double (*f)(double), double Ln);
 /**
  * Функция для получения аппроксимированого минимума методом Фибоначчи
  * @param a1 - левое число интервала
@@ -98,7 +98,7 @@ double methodFibonacci1(double a1, double b1, double (*f)(double), double Ln);
  * @param eps - последний интервал, определяющий точность приближения
  * @return аппроксимированный минимум
  */
-double methodFibonacci2(double a1, double b1, double (*f)(double), double Ln, double eps);
+double methodFibonacci2(double &a1, double &b1, double (*f)(double), double Ln, double eps);
 
 /**
  * Рассчетное соотношение использующееся в методах полиномиальной интерполяции
@@ -150,8 +150,40 @@ double calculatedRatios4EI(double a, double b, double c, double (*f)(double));
  * Алгоритм Экстрополяции - интерполяции.
  * @param a1 - левое число интервала
  * @param b1 - правое число интервала
- * @param eps - точность приближения
+ * @param f - функция
+ * @param eps1 - оценка близости двух точек по опликате
+ * @param eps2 - оценка близости двух точек по ординате
  * @return аппроксимированный минимум
  */
-double a1ei(double a1, double b1, double (*f)(double), double eps);
+double a1ei(double &a1, double &b1, double (*f)(double), double eps1, double eps2);
+
+/**
+ * Метод Пауэлла, полиномная интерполяция, квадратичным интерполяционным многочленом
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps1 - оценка близости двух точек по опликате
+ * @param eps2 - оценка близости двух точек по ординате
+ * @return аппроксимированный минимум
+ */
+double methodPowellA2PI(double &a1, double &b1, double (*f)(double), double eps1, double eps2);
+
+/**
+ * Алгоритм Свенна2
+ * 1) Алгоритм Свенна1 находит интервал локального минимума по входной точке x1.
+ * 2) Золотое сечение 1 сужает интервал поиска находится a2 и b2
+ * 3) Для получения
+ * @param x1 - начальная точка
+ * @param a - левая, возвращаемая, точка
+ * @param b - центральная, возвращаемая, точка
+ * @param c - правая, возвращаемая, точка
+ * @param f - функция
+ * @param eps1 - погрешность приближения по опликате
+ * @param eps2 - погрешность приближения по ординате
+ * @return
+ */
+double swenn2(double x1, double &a, double &b, double &c, double (*f)(double), double eps1, double eps2);
+
+double a3DSC(double x1, double (*f)(double), double eps1, double eps2);
+
 #endif

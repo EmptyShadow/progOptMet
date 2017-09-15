@@ -65,7 +65,7 @@ int swenn(double x1, double &a1, double &b1, double (*f)(double)) {
  * @param eps - окресность центральной точки
  * @return аппроксимированый минимум
  */
-double dichotomy(double a1, double b1, double (*f)(double), double eps) {
+double dichotomy(double &a1, double &b1, double (*f)(double), double eps) {
     double delta = 0.1 * eps, a_k = a1, b_k = b1;
     double lambda_k, mu_k;
     do {
@@ -79,7 +79,8 @@ double dichotomy(double a1, double b1, double (*f)(double), double eps) {
         std::cout << "lambda_k: " << lambda_k
                   << " mu_k: " << mu_k << std::endl;
     } while (abs(b_k - a_k) > eps);
-
+    a1 = a_k;
+    b1 = b_k;
     return (b_k + a_k) / 2.0;
 }
 
@@ -103,7 +104,7 @@ void intervalNormalization(double &a, double &b) {
  * @param eps - точность
  * @return - аппроксмированный минимум
  */
-double goldenSectionNum1(double a1, double b1, double (*f)(double), double m, double eps) {
+double goldenSectionNum1(double &a1, double &b1, double (*f)(double), double m, double eps) {
     // начальный этап
     double lambda = lambdaGoldenSection(a1, b1),
             mu = muGoldenSection(a1, b1);
@@ -160,7 +161,7 @@ double muGoldenSection(double a1, double b1) {
  * @param eps - точность
  * @return - аппроксмированный минимум
  */
-double goldenSectionNum2(double a1, double b1, double (*f)(double), double m, double eps) {
+double goldenSectionNum2(double &a1, double &b1, double (*f)(double), double m, double eps) {
     // начальный этап
     double x1 = lambdaGoldenSection(a1, b1), x2, f1, f2;
     int k = 1;
@@ -242,7 +243,7 @@ double getPrevNumberFibonacci(double fn, int &n) {
  * @param eps - последний интервал, определяющий точность приближения
  * @return аппроксимированный минимум
  */
-double methodFibonacci1(double a1, double b1, double (*f)(double), double Ln) {
+double methodFibonacci1(double &a1, double &b1, double (*f)(double), double Ln) {
     int n;
     double Fn = getPrevNumberFibonacci(abs(a1 - b1) / Ln, n), Fnm = getNNumberFibonacci(n - 1), Fnmm = Fn - Fnm, Fnp = Fn + Fnm;
     double delta = abs(b1 - a1) / Fnp;
@@ -275,6 +276,7 @@ double methodFibonacci1(double a1, double b1, double (*f)(double), double Ln) {
     if (f(x1) < f(x2)) {
         return (a1 + x1) / 2;
     }
+    a1 = x2;
     return (x2 + b1) / 2;
 }
 
@@ -286,7 +288,7 @@ double methodFibonacci1(double a1, double b1, double (*f)(double), double Ln) {
  * @param eps - последний интервал, определяющий точность приближения
  * @return аппроксимированный минимум
  */
-double methodFibonacci2(double a1, double b1, double (*f)(double), double Ln, double eps) {
+double methodFibonacci2(double &a1, double &b1, double (*f)(double), double Ln, double eps) {
     int n;
     double Fn = getPrevNumberFibonacci(abs(a1 - b1) / Ln, n), Fnm = getNNumberFibonacci(n - 1);
     std::cout << "n: " << n << "  Fn: " << Fn << " Fnm: " << Fnm << std::endl;
@@ -382,15 +384,119 @@ double calculatedRatios4EI(double a, double b, double c, double (*f)(double)) {
  * @param eps - точность приближения
  * @return аппроксимированный минимум
  */
-double a1ei(double a1, double b1, double (*f)(double), double eps) {
+double a1ei(double &a1, double &b1, double (*f)(double), double eps1, double eps2) {
     double x1 = (a1 + b1) / 2, d;
     double h = 0.01 * abs(x1);
     int k = 1;
     while (true) {
         d = calculatedRatios2EI(a1, x1, b1, f);
-        if (abs(1 - d / x1) <= eps && abs(1 - f(d) / f(x1)) <= eps) {
+        if (abs(1 - d / x1) <= eps1 && abs(1 - f(d) / f(x1)) <= eps2) {
+            if (x1 < d) {
+                a1 = x1;
+                b1 = d;
+            } else {
+                a1= d;
+                b1 = x1;
+            }
             return (x1 + d) / 2;
         }
         x1 = d;
     }
+}
+
+/**
+ * Метод Пауэлла, полиномная интерполяция, квадратичным интерполяционным многочленом
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps1 - оценка близости двух точек по опликате
+ * @param eps2 - оценка близости двух точек по ординате
+ * @return аппроксимированный минимум
+ */
+double methodPowellA2PI(double &a1, double &b1, double (*f)(double), double eps1, double eps2){
+    double a = a1, c = b1, b = (a + c) / 2;
+    int k = 1;
+    double d = calculatedRatios1EI(a, b, c, f), fb = f(b), fd = f(d);
+    printf("k: %d; a: %0.9f; b: %0.9f; c: %0.9f; d: %0.9f; fb: %0.9f; fd: %0.9f;\n", k, a, b, c, d, fb, fd);
+    while (b != 0.0 && (abs(1 - d / b) > eps1 || abs(1 - fd / fb) > eps2)) {
+        if (b < d && fb < fd) {
+            c = d;
+        } else if (b < d && fb > fd) {
+            a = b;
+            b = d;
+        } else if (b > d && fb < fd) {
+            a = d;
+        } else if (b > d && fb > fd) {
+            c = b;
+            b = d;
+        }
+        d = calculatedRatios2EI(a, b, c, f);
+        fb = f(b);
+        fd = f(d);
+        k++;
+        printf("k: %d; a: %0.9f; b: %0.9f; c: %0.9f; d: %0.9f; fb: %0.9f; fd: %0.9f;\n", k, a, b, c, d, fb, fd);
+    }
+    if (b < d) {
+        a1 = b;
+        b1 = d;
+    } else {
+        a1 = d;
+        b1 = b;
+    }
+    return (a1 + b1) / 2;
+}
+/**
+ * Алгоритм Свенна2
+ * 1) Алгоритм Свенна1 находит интервал локального минимума по входной точке x1.
+ * 2) Золотое сечение 1 сужает интервал поиска находится a2 и b2
+ * 3) Для получения
+ * @param x1 - начальная точка
+ * @param a - левая, возвращаемая, точка
+ * @param b - центральная, возвращаемая, точка
+ * @param c - правая, возвращаемая, точка
+ * @param f - функция
+ * @param eps1 - погрешность приближения по опликате
+ * @param eps2 - погрешность приближения по ординате
+ * @return - аппроксимирующий миниммум
+ */
+double swenn2(double x1, double &a, double &b, double &c, double (*f)(double), double eps1, double eps2);
+
+double a3DSC(double x1, double (*f)(double), double eps1, double eps2) {
+    double a, b, c, d, x_k, h, x_kp, x_km, x_kpm;
+    int k = 1;
+    do {
+        // Шаг 1 Свенн 2
+        swenn(x1, a, c, f);
+        goldenSectionNum1(a, c, f, 20, eps1);
+        x_k = (a + c) / 2;
+        h = 0.01 * x_k;
+        if (f(x_k) < f(x_k + h)) {
+            h = -h;
+        }
+        x_kp = x_k + h;
+        while (f(x_kp) <= f(x_k)) {
+            h *= 2;
+            x_k = x_kp;
+            x_kp = x_k + h;
+            k++;
+        }
+        x_kpm = (x_kp + x_k) / 2;
+        x_km = x_k - (x_kp - x_kpm);
+        if (f(x_kpm) < f(x_k)) {
+            a = x_k;
+            b = x_kpm;
+            c = x_kp;
+        } else {
+            a = x_km;
+            b = x_k;
+            c = x_kpm;
+        }
+        // Шаг 2 вычисление d
+        d = calculatedRatios3EI(a, b, c, f);
+        // Шаг 3 проверить критерий окончания поиска
+        x1 = b;
+        h /= 2;
+        k++;
+    } while (abs(1 - d / b) >= eps1 || abs(1 - f(d) / f(b)) >= eps2);
+    return b;
 }
