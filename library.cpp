@@ -446,21 +446,13 @@ double methodPowellA2PI(double &a1, double &b1, double (*f)(double), double eps1
     return (a1 + b1) / 2;
 }
 /**
- * Алгоритм Свенна2
- * 1) Алгоритм Свенна1 находит интервал локального минимума по входной точке x1.
- * 2) Золотое сечение 1 сужает интервал поиска находится a2 и b2
- * 3) Для получения
+ * Алгоритм ДСК(Девис, Свенн, Кемпи)
  * @param x1 - начальная точка
- * @param a - левая, возвращаемая, точка
- * @param b - центральная, возвращаемая, точка
- * @param c - правая, возвращаемая, точка
- * @param f - функция
- * @param eps1 - погрешность приближения по опликате
- * @param eps2 - погрешность приближения по ординате
- * @return - аппроксимирующий миниммум
+ * @param f - функция для вычислений
+ * @param eps1 - оценка близости двух точек по опликате
+ * @param eps2 - оценка близости двух точек по ординате
+ * @return аппроксиированный минимум
  */
-double swenn2(double x1, double &a, double &b, double &c, double (*f)(double), double eps1, double eps2);
-
 double a3DSC(double x1, double (*f)(double), double eps1, double eps2) {
     double a, b, c, d, x_k, h, x_kp, x_km, x_kpm;
     int k = 1;
