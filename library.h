@@ -214,4 +214,14 @@ double valueOfTheSecondDerivativeAtThePoint(double x, double delta_x, double (*f
  */
 double methodOfThreePointSearchAtEqualIntervals(double &a1, double &b1, double (*f)(double), double eps);
 
+/**
+ * Метод секущих (линейная интерполяция)
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps - погрешность
+ * @return
+ */
+double methodSecants(double &a1, double &b1, double (*f)(double), double eps);
+
 #endif

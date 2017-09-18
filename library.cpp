@@ -596,3 +596,38 @@ double methodOfThreePointSearchAtEqualIntervals(double &a1, double &b1, double (
 
     return x_;
 }
+
+/**
+ * Метод секущих (линейная интерполяция)
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps - погрешность
+ * @return
+ */
+double methodSecants(double &a1, double &b1, double (*f)(double), double eps) {
+    printf("Start method Secants\n");
+    int k = 1;
+    double x_kp, fd_kp;
+    while(true) {
+        x_kp = b1 - valueOfTheDerivativeAtThePoint(b1, eps, f)*(b1 - a1) /
+                            (valueOfTheDerivativeAtThePoint(b1, eps, f) - valueOfTheDerivativeAtThePoint(a1, eps, f));
+        fd_kp = f(x_kp);
+        printf("k: %d; a1: %0.7f; x_kp: %0.7f; b1: %0.7f; fx_kp: %0.7f;\n", k, a1, x_kp, b1, fd_kp);
+        if (abs(fd_kp < eps)) {
+            break;
+        }
+        if (fd_kp > 0) {
+            b1 = x_kp;
+        } else {
+            a1 = x_kp;
+        }
+        k++;
+    }
+    double x_ = (a1 + b1) / 2.0, f_ = f(x_);
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
+    printf("End method Secants\n\n\n");
+
+    return x_;
+}
