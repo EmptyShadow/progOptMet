@@ -11,9 +11,9 @@
  * @param &a1 - левый конец локализованого интервала
  * @param &b1 - правый конец локализованого интервала
  * @param f  - функция от одной переменной
- * @return возвращается номер: 1 - функция отработала без проблем, 0 - возникли проблеммы
+ * @return аппроксимированный минимум
  */
-int swenn(double x1, double &a1, double &b1, double (*f)(double));
+double swenn(double x1, double &a1, double &b1, double (*f)(double));
 /**
  * Функция нормализации интервала
  * @param &a - левый конец локализованого интервала
@@ -176,5 +176,42 @@ double methodPowellA2PI(double &a1, double &b1, double (*f)(double), double eps1
  * @return аппроксиированный минимум
  */
 double a3DSC(double x1, double (*f)(double), double eps1, double eps2);
+/**
+ * Метод средней точки (Больцано) является вариантом метода деления интервала по-полам.
+ * Последовательные сокращения интервала неопределенности произво-дятся на
+ * основе оценки производной минимизируемой функции в центре те-кущего интервала.
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps - погрешность
+ * @return
+ */
+double midpointMethod(double &a1, double &b1, double (*f)(double), double eps);
+/**
+ * Значение производной в точке
+ * @param x - точка
+ * @param delta_x - скольугодно малое преращение аргумента
+ * @param f - функция
+ * @return значение производной в точке
+ */
+double valueOfTheDerivativeAtThePoint(double x, double delta_x, double (*f)(double));
+/**
+ * Значение второй производной в точке
+ * @param x - точка
+ * @param delta_x - скольугодно малое преращение аргумента
+ * @param f - функция
+ * @return значение производной в точке
+ */
+double valueOfTheSecondDerivativeAtThePoint(double x, double delta_x, double (*f)(double));
+
+/**
+ * Метод трехточечного поиска на равных интервалах
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps - погрешность
+ * @return
+ */
+double methodOfThreePointSearchAtEqualIntervals(double &a1, double &b1, double (*f)(double), double eps);
 
 #endif

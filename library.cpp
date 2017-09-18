@@ -12,13 +12,16 @@
  * @param a1 - левый конец локализованого интервала
  * @param b1 - правый конец локализованого интервала
  * @param f  - функция от одной переменной
- * @return возвращается номер: 1 - функция отработала без проблем, 0 - возникли проблеммы
+ * @return аппроксимированный минимум
  */
-int swenn(double x1, double &a1, double &b1, double (*f)(double)) {
+double swenn(double x1, double &a1, double &b1, double (*f)(double)) {
+    printf("Start method Swenn;\n");
     // Выбираем начальный шаг
     double h = (x1 == 0) ? 0.01 : 0.01 * abs(x1);
     // Шаг 1: Устанавливаем направлнение
     double f1 = f(x1), x2 = x1 + h;
+    int k = 1;
+    printf("k: %d; x1: %0.7f; x2: %0.7f; h: %0.7f; f1: %0.7f; f2: %0.7f;\n", k, x1, x2, h, f1, f(x2));
     // Если
     if (f(x2) > f1) {
         //, то меняем направление
@@ -26,11 +29,7 @@ int swenn(double x1, double &a1, double &b1, double (*f)(double)) {
         x2 = x1 + h;
     }
 
-    std::cout << "x1: " << x1
-              << " x2: " << x2
-              << " h: " << h
-              << "f1: " << f1
-              << "f2: " << f(x2) << std::endl;
+    printf("k: %d; x1: %0.7f; x2: %0.7f; h: %0.7f; f1: %0.7f; f2: %0.7f;\n", k, x1, x2, h, f1, f(x2));
 
     // Шаг 2: вычисляем точку fk
     double f_k = f(x2), f_kprev = f1, x_k = x2, x_kprev = x1;
@@ -40,12 +39,9 @@ int swenn(double x1, double &a1, double &b1, double (*f)(double)) {
         x_kprev = x_k;
         x_k = x_kprev + h;
         f_k = f(x_k);
+        k++;
 
-        std::cout << "x_kprev: " << x_kprev
-                  << " x_k: " << x_k
-                  << " h: " << h
-                  << " f_kprev: " << f_kprev
-                  << " f_k: " << f_k << std::endl;
+        printf("k: %d; x_kprev: %0.7f; x_k: %0.7f; h: %0.7f; f_prev: %0.7f; f_k: %0.7f;\n", k, x_kprev, x_k, h, f_kprev, f_k);
     }
 
     // Шаг 3
@@ -53,8 +49,11 @@ int swenn(double x1, double &a1, double &b1, double (*f)(double)) {
     a1 = x_kprev - h / 2.0;
 
     intervalNormalization(a1, b1);
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; f(x_): %0.7f;\n", (a1 + b1) / 2.0, f((a1 + b1) / 2.0));
+    printf("End method Swenn\n\n\n");
 
-    return 1;
+    return (a1 + b1) / 2.0;
 }
 /**
  * Дихотомический метод одномерного поиска на заданном интервале
@@ -66,9 +65,12 @@ int swenn(double x1, double &a1, double &b1, double (*f)(double)) {
  * @return аппроксимированый минимум
  */
 double dichotomy(double &a1, double &b1, double (*f)(double), double eps) {
+    printf("Start method Dichotomy\n");
     double delta = 0.1 * eps, a_k = a1, b_k = b1;
     double lambda_k, mu_k;
+    int k = 0;
     do {
+        k++;
         lambda_k = (b_k + a_k - delta) / 2.0;
         mu_k = (b_k + a_k + delta) / 2.0;
         if (f(lambda_k) < f(mu_k)) {
@@ -76,12 +78,15 @@ double dichotomy(double &a1, double &b1, double (*f)(double), double eps) {
         } else {
             a_k = lambda_k;
         }
-        std::cout << "lambda_k: " << lambda_k
-                  << " mu_k: " << mu_k << std::endl;
+        printf("k: %d; lambda_k: %0.7f; mu_k: %0.7f;\n", k, lambda_k, mu_k);
     } while (abs(b_k - a_k) > eps);
     a1 = a_k;
     b1 = b_k;
-    return (b_k + a_k) / 2.0;
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    double x_ = (b_k + a_k) / 2.0, f_ = f(x_);
+    printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
+    printf("End method Dichotomy\n\n\n");
+    return x_;
 }
 
 /**
@@ -105,6 +110,7 @@ void intervalNormalization(double &a, double &b) {
  * @return - аппроксмированный минимум
  */
 double goldenSectionNum1(double &a1, double &b1, double (*f)(double), double m, double eps) {
+    printf("Start method golden section 1\n");
     // начальный этап
     double lambda = lambdaGoldenSection(a1, b1),
             mu = muGoldenSection(a1, b1);
@@ -112,11 +118,7 @@ double goldenSectionNum1(double &a1, double &b1, double (*f)(double), double m, 
     // основной этап
     // Сокращение текущего интервала локализации
     do {
-        std::cout << "k: " << k
-                  << "a1: " << a1
-                  << " b1: " << b1
-                  << " lambda: " << lambda
-                  << " mu: " << mu << std::endl;
+        printf("k: %d; a1: %0.7f; b1: %0.7f; lambda_k: %0.7f; mu_k: %0.7f;\n", k, a1, b1, lambda, mu);
         if (f(a1) < f(b1)) {
             b1 = mu;
             mu = lambda;
@@ -128,8 +130,12 @@ double goldenSectionNum1(double &a1, double &b1, double (*f)(double), double m, 
         }
         k++;
     } while(k <= m && abs(b1 - a1) > eps);
+    double x_ = (a1 + b1) / 2.0, f_ = f(x_);
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
+    printf("End method golden section 1\n\n\n");
 
-    return (a1 + b1) / 2.0;
+    return x_;
 }
 /**
  * Функция получения левого золотого числа
@@ -162,6 +168,7 @@ double muGoldenSection(double a1, double b1) {
  * @return - аппроксмированный минимум
  */
 double goldenSectionNum2(double &a1, double &b1, double (*f)(double), double m, double eps) {
+    printf("Start method golden section 2\n");
     // начальный этап
     double x1 = lambdaGoldenSection(a1, b1), x2, f1, f2;
     int k = 1;
@@ -171,14 +178,7 @@ double goldenSectionNum2(double &a1, double &b1, double (*f)(double), double m, 
         x2 = b1 + a1 - x1;
         f1 = f(x1);
         f2 = f(x2);
-        std::cout << "k: " << k
-                  << " a1: " << a1
-                  << " b1: " << b1
-                  << " x1: " << x1
-                  << " x2: " << x2
-                  << " f1: " << f1
-                  << " f2: " << f2
-                  << std::endl;
+        printf("k: %d; a1: %0.7f; b1: %0.7f; x1: %0.7f; x2: %0.7f; f1: %0.7f; f2: %0.7f;\n", k, a1, b1, x1, x2, f1, f(x2));
         if (x1 < x2 && f1 < f2) {
             b1 = x2;
         } else if (x1 < x2 && f1 > f2) {
@@ -193,7 +193,12 @@ double goldenSectionNum2(double &a1, double &b1, double (*f)(double), double m, 
         k++;
     } while(k <= m && abs(b1 - a1) > eps);
 
-    return (a1 + b1) / 2.0;
+    double x_ = (a1 + b1) / 2.0, f_ = f(x_);
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
+    printf("End method golden section 1\n\n\n");
+
+    return x_;
 }
 
 /**
@@ -274,10 +279,10 @@ double methodFibonacci1(double &a1, double &b1, double (*f)(double), double Ln) 
     } while (k < (n - 1));
     x2 = x1 + delta;
     if (f(x1) < f(x2)) {
-        return (a1 + x1) / 2;
+        return (a1 + x1) / 2.0;
     }
     a1 = x2;
-    return (x2 + b1) / 2;
+    return (x2 + b1) / 2.0;
 }
 
 /**
@@ -345,7 +350,7 @@ double calculatedRatios1EI(double a, double b, double c, double (*f)(double)) {
  */
 double calculatedRatios2EI(double a, double b, double c, double (*f)(double)) {
     double fa = f(a), fb = f(b), fc = f(c);
-    return (a + b) / 2 + 0.5 * (fa - fb) * (b - c) * (c - a) / (fa * (b - c) + fb * (c - a) + fc * (a - b));
+    return (a + b) / 2.0 + 0.5 * (fa - fb) * (b - c) * (c - a) / (fa * (b - c) + fb * (c - a) + fc * (a - b));
 }
 
 /**
@@ -374,7 +379,7 @@ double calculatedRatios3EI(double a, double b, double c, double (*f)(double)) {
  */
 double calculatedRatios4EI(double a, double b, double c, double (*f)(double)) {
     double fa = f(a), fb = f(b), fc = f(c);
-    return b + 0.5 * (b - a) * (fa - fc) / (fa - 2 * fb + fc);
+    return b + 0.5 * (b - a) * (fa - fc) / (fa - 2.0 * fb + fc);
 }
 
 /**
@@ -385,12 +390,12 @@ double calculatedRatios4EI(double a, double b, double c, double (*f)(double)) {
  * @return аппроксимированный минимум
  */
 double a1ei(double &a1, double &b1, double (*f)(double), double eps1, double eps2) {
-    double x1 = (a1 + b1) / 2, d;
+    double x1 = (a1 + b1) / 2.0, d;
     double h = 0.01 * abs(x1);
     int k = 1;
     while (true) {
         d = calculatedRatios2EI(a1, x1, b1, f);
-        if (abs(1 - d / x1) <= eps1 && abs(1 - f(d) / f(x1)) <= eps2) {
+        if (abs(1.0 - d / x1) <= eps1 && abs(1.0 - f(d) / f(x1)) <= eps2) {
             if (x1 < d) {
                 a1 = x1;
                 b1 = d;
@@ -398,7 +403,7 @@ double a1ei(double &a1, double &b1, double (*f)(double), double eps1, double eps
                 a1= d;
                 b1 = x1;
             }
-            return (x1 + d) / 2;
+            return (x1 + d) / 2.0;
         }
         x1 = d;
     }
@@ -414,11 +419,12 @@ double a1ei(double &a1, double &b1, double (*f)(double), double eps1, double eps
  * @return аппроксимированный минимум
  */
 double methodPowellA2PI(double &a1, double &b1, double (*f)(double), double eps1, double eps2){
-    double a = a1, c = b1, b = (a + c) / 2;
+    printf("Start method Powell\n");
+    double a = a1, c = b1, b = (a + c) / 2.0;
     int k = 1;
     double d = calculatedRatios1EI(a, b, c, f), fb = f(b), fd = f(d);
     printf("k: %d; a: %0.9f; b: %0.9f; c: %0.9f; d: %0.9f; fb: %0.9f; fd: %0.9f;\n", k, a, b, c, d, fb, fd);
-    while (b != 0.0 && (abs(1 - d / b) > eps1 || abs(1 - fd / fb) > eps2)) {
+    while (b != 0.0 && (abs(1.0 - d / b) > eps1 || abs(1.0 - fd / fb) > eps2)) {
         if (b < d && fb < fd) {
             c = d;
         } else if (b < d && fb > fd) {
@@ -443,7 +449,12 @@ double methodPowellA2PI(double &a1, double &b1, double (*f)(double), double eps1
         a1 = d;
         b1 = b;
     }
-    return (a1 + b1) / 2;
+    double x_ = (a1 + b1) / 2.0, f_ = f(x_);
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
+    printf("End method Powell\n\n\n");
+
+    return x_;
 }
 /**
  * Алгоритм ДСК(Девис, Свенн, Кемпи)
@@ -460,19 +471,19 @@ double a3DSC(double x1, double (*f)(double), double eps1, double eps2) {
         // Шаг 1 Свенн 2
         swenn(x1, a, c, f);
         goldenSectionNum1(a, c, f, 20, eps1);
-        x_k = (a + c) / 2;
+        x_k = (a + c) / 2.0;
         h = 0.01 * x_k;
         if (f(x_k) < f(x_k + h)) {
             h = -h;
         }
         x_kp = x_k + h;
         while (f(x_kp) <= f(x_k)) {
-            h *= 2;
+            h *= 2.0;
             x_k = x_kp;
             x_kp = x_k + h;
             k++;
         }
-        x_kpm = (x_kp + x_k) / 2;
+        x_kpm = (x_kp + x_k) / 2.0;
         x_km = x_k - (x_kp - x_kpm);
         if (f(x_kpm) < f(x_k)) {
             a = x_k;
@@ -487,8 +498,101 @@ double a3DSC(double x1, double (*f)(double), double eps1, double eps2) {
         d = calculatedRatios3EI(a, b, c, f);
         // Шаг 3 проверить критерий окончания поиска
         x1 = b;
-        h /= 2;
+        h /= 2.0;
         k++;
     } while (abs(1 - d / b) >= eps1 || abs(1 - f(d) / f(b)) >= eps2);
     return b;
+}
+
+/**
+ * Значение производной в точке
+ * @param x - точка
+ * @param delta_x - скольугодно малое преращение аргумента
+ * @param f - функция
+ * @return значение производной в точке
+ */
+double valueOfTheDerivativeAtThePoint(double x, double delta_x, double (*f)(double)) {
+    return (f(x + delta_x) - f(x)) / delta_x;
+}
+
+/**
+ * Значение второй производной в точке
+ * @param x - точка
+ * @param delta_x - скольугодно малое преращение аргумента
+ * @param f - функция
+ * @return значение производной в точке
+ */
+double valueOfTheSecondDerivativeAtThePoint(double x, double delta_x, double (*f)(double)) {
+    return (f(x + delta_x) - 2 * f(x) + f(x - delta_x)) / (delta_x * delta_x);
+}
+
+/**
+ * Метод средней точки (Больцано) является вариантом метода деления интервала по-полам.
+ * Последовательные сокращения интервала неопределенности произво-дятся на
+ * основе оценки производной минимизируемой функции в центре те-кущего интервала.
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps - погрешность
+ * @return
+ */
+double midpointMethod(double &a1, double &b1, double (*f)(double), double eps) {
+    printf("Start method Bolzano\n");
+    double xk = (a1 + b1) / 2.0;
+    int k = 1;
+    while(abs(valueOfTheDerivativeAtThePoint(xk, eps, f)) > eps || abs(b1 - a1) > eps) {
+        printf("k: %d; a1: %0.9f; b1: %0.9f; xk: %0.9f; abs(b1 - a1): %0.9f; f'(xk): %0.9f;\n", k, a1, b1, xk, abs(b1 - a1), valueOfTheDerivativeAtThePoint(xk, eps, f));
+        if (valueOfTheDerivativeAtThePoint(xk, eps, f) > 0.0) {
+            b1 = xk;
+        } else {
+            a1 = xk;
+        }
+        xk = (b1 + a1) / 2.0;
+        k++;
+    }
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; fx_: %0.7f;\n", xk, f(xk));
+    printf("End method Bolzano\n\n\n");
+    return xk;
+}
+
+/**
+ * Метод трехточечного поиска на равных интервалах
+ * @param a1 - левое число интервала
+ * @param b1 - правое число интервала
+ * @param f - функция
+ * @param eps - погрешность
+ * @return
+ */
+double methodOfThreePointSearchAtEqualIntervals(double &a1, double &b1, double (*f)(double), double eps) {
+    printf("Start method of three point search at equal intervals\n");
+    double x_m = (a1 + b1) / 2.0, x1, x2, L, f1, f2, fm;
+    int k = 1;
+    do {
+        L = abs(b1 - a1);
+        x1 = a1 + L / 4.0;
+        x2 = b1 - L / 4.0;
+        f1 = f(x1);
+        f2 = f(x2);
+        fm = f(x_m);
+        printf("k: %d; x1: %0.7f; f1: %0.7f; xm: %0.7f; fm: %0.7f; x2: %0.7f; f2: %0.7f; a1: %0.7f; b1: %0.7f;\n", k, x1, f1, x_m, fm, x2, f2, a1, b1);
+        if (f1 < fm) {
+            b1 = x_m;
+            x_m = x1;
+        } else if (f1 >= fm && f2 >= fm) {
+            a1 = x1;
+            b1 = x2;
+        } else {
+            a1 = x_m;
+            x_m = x2;
+        }
+        printf("k: %d; x1: %0.7f; f1: %0.7f; xm: %0.7f; fm: %0.7f; x2: %0.7f; f2: %0.7f; a1: %0.7f; b1: %0.7f;\n", k, x1, f1, x_m, fm, x2, f2, a1, b1);
+        k++;
+    } while(abs(b1 - a1) >= eps);
+    double x_ = (a1 + b1) / 2.0, f_ = f(x_);
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
+    printf("End method of three point search at equal intervals\n\n\n");
+
+    return x_;
 }
