@@ -623,7 +623,7 @@ double methodSecants(double &a1, double &b1, double (*f)(double), double eps) {
         }
         k++;
     }
-    double x_ = (a1 + b1) / 2.0, f_ = f(x_);
+    double x_ = x_kp, f_ = f(x_);
     printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
     printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
     printf("End method Secants\n\n\n");
