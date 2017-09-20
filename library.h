@@ -224,4 +224,16 @@ double methodOfThreePointSearchAtEqualIntervals(double &a1, double &b1, double (
  */
 double methodSecants(double &a1, double &b1, double (*f)(double), double eps);
 
+/**
+ * Метод кубической интерполяции для одномерной минимизации
+ * @param x1 - начальная точка
+ * @param a1 - левый интервал
+ * @param b1 - правый интервал
+ * @param f - функция
+ * @param eps - погрешность
+ * @param h - начальный шаг
+ * @return - минимум
+ */
+double methodOfCubicInterpolation(double x1, double &a1, double &b1, double (*f)(double), double eps, double h);
+
 #endif

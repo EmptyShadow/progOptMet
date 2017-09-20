@@ -40,7 +40,6 @@ double swenn(double x1, double &a1, double &b1, double (*f)(double)) {
         x_k = x_kprev + h;
         f_k = f(x_k);
         k++;
-
         printf("k: %d; x_kprev: %0.7f; x_k: %0.7f; h: %0.7f; f_prev: %0.7f; f_k: %0.7f;\n", k, x_kprev, x_k, h, f_kprev, f_k);
     }
 
@@ -612,12 +611,12 @@ double methodSecants(double &a1, double &b1, double (*f)(double), double eps) {
     while(true) {
         x_kp = b1 - valueOfTheDerivativeAtThePoint(b1, eps, f)*(b1 - a1) /
                             (valueOfTheDerivativeAtThePoint(b1, eps, f) - valueOfTheDerivativeAtThePoint(a1, eps, f));
-        fd_kp = f(x_kp);
-        printf("k: %d; a1: %0.7f; x_kp: %0.7f; b1: %0.7f; fx_kp: %0.7f;\n", k, a1, x_kp, b1, fd_kp);
-        if (abs(fd_kp < eps)) {
+        fd_kp = valueOfTheDerivativeAtThePoint(x_kp, eps, f);
+        printf("k: %d; a1: %0.7f; x_kp: %0.7f; b1: %0.7f; fd_kp: %0.7f;\n", k, a1, x_kp, b1, fd_kp);
+        if (abs(fd_kp) < eps) {
             break;
         }
-        if (fd_kp > 0) {
+        if (fd_kp > 0.0) {
             b1 = x_kp;
         } else {
             a1 = x_kp;
@@ -629,5 +628,81 @@ double methodSecants(double &a1, double &b1, double (*f)(double), double eps) {
     printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
     printf("End method Secants\n\n\n");
 
+    return x_;
+}
+
+/**
+ * Метод кубической интерполяции для одномерной минимизации
+ * @param x1 - начальная точка
+ * @param a1 - левый интервал
+ * @param b1 - правый интервал
+ * @param f - функция
+ * @param eps - погрешность
+ * @param h - начальный шаг
+ * @return - минимум
+ */
+double methodOfCubicInterpolation(double x1, double &a1, double &b1, double (*f)(double), double eps, double h) {
+    printf("Start method of cubic interpolation\n");
+    double x_k = x1, x_kp, h_k = h, fd_k, fd_kp;
+    int k = 1;
+    swenn(x1, a1, b1, f);
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    if (valueOfTheDerivativeAtThePoint(x1, eps, f) > 0) {
+        h_k = -h_k;
+    }
+    while(true) {
+        x_kp = x_k + h_k;
+        fd_k = valueOfTheDerivativeAtThePoint(x_k, eps, f);
+        fd_kp = valueOfTheDerivativeAtThePoint(x_kp, eps, f);
+        printf("k: %d; x_k: %0.7f; x_kp: %0.7f; fd_k: %0.7f; fd_kp: %0.7f; h_k: %0.7f; a1: %0.7f; b1: %0.7f;\n", k, x_k, x_kp, fd_k, fd_kp, h_k, a1, b1);
+        if (fd_kp * fd_k < 0.0) {
+            if (x_k < x_kp) {
+                a1 = x_k;
+                b1 = x_kp;
+            } else {
+                a1 = x_kp;
+                b1 = x_k;
+            }
+            break;
+        }
+        printf("k: %d; x_k: %0.7f; x_kp: %0.7f; fd_k: %0.7f; fd_kp: %0.7f; h_k: %0.7f; a1: %0.7f; b1: %0.7f;\n", k, x_k, x_kp, fd_k, fd_kp, h_k, a1, b1);
+        h *= 2;
+        x_k = x_kp;
+        k++;
+    }
+    double gamma, z, omega, f_a, f_b, fd_a, fd_b, x_, fd_x_;
+    while(true) {
+        f_a = f(a1);
+        f_b = f(b1);
+        fd_a = valueOfTheDerivativeAtThePoint(a1, eps, f);
+        fd_b = valueOfTheDerivativeAtThePoint(b1, eps, f);
+        z = fd_a + fd_b + 3 * (f_a - f_b) / (b1 - a1);
+        omega = sqrt(z * z - fd_a * fd_b);
+        gamma = (z + omega - fd_a) / (fd_b - fd_a + 2 * omega);
+        if (gamma < 0.0) {
+            x_ = a1;
+        } else if (gamma > 1.0) {
+            x_ = b1;
+            break;
+        } else {
+            x_ = a1 + gamma * (b1 - a1);
+            break;
+        }
+        fd_x_ = valueOfTheDerivativeAtThePoint(x_, eps, f);
+        printf("k: %d; a1: %0.7f; b1: %0.7f; f_a: %0.7f; f_b: %0.7f; fd_a: %0.7f; fd_b: %0.7f; z: %0.7f; omega: %0.7f; gamma: %0.7f; x_: %0.7f; fd_x_: %0.7f;\n",
+               k, a1, b1, f_a, f_b, fd_a, fd_b, z, omega, gamma, x_, fd_x_);
+        if (abs(fd_x_) < eps) {
+            break;
+        }
+        if (fd_x_ > 0.0) {
+            b1 = x_;
+        } else {
+            a1 = x_;
+        }
+        k++;
+    }
+    printf("a1: %0.7f; b1: %0.7f;\n", a1, b1);
+    printf("x_: %0.7f; fx_: %0.7f;\n", x_, f(x_));
+    printf("End method of cubic interpolation\n\n\n");
     return x_;
 }
