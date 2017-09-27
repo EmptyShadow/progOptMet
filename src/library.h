@@ -1,6 +1,14 @@
 #ifndef UNTITLED_LIBRARY_H
 #define UNTITLED_LIBRARY_H
 
+#include <stdio.h>
+#include "utility"
+#include "math.h"
+#include <iostream>
+#include "vector"
+#include "string"
+#include "parameters/Params.h"
+
 /**
  * Метод Свенна, локализующий интервал поиска минимума унимодальной функции,
  * в которой выполняются условия

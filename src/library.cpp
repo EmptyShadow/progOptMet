@@ -1,7 +1,4 @@
 #include "library.h"
-#include "math.h"
-#include <iostream>
-
 /**
  * Метод Свенна, локализующий интервал поиска минимума унимодальной функции,
  * в которой выполняются условия
@@ -54,6 +51,13 @@ double swenn(double x1, double &a1, double &b1, double (*f)(double)) {
 
     return (a1 + b1) / 2.0;
 }
+void intervalNormalization(double &a, double &b) {
+    if (a > b) {
+        double t = a;
+        a = b;
+        b = t;
+    }
+}
 /**
  * Дихотомический метод одномерного поиска на заданном интервале
  *
@@ -86,17 +90,6 @@ double dichotomy(double &a1, double &b1, double (*f)(double), double eps) {
     printf("x_: %0.7f; fx_: %0.7f;\n", x_, f_);
     printf("End method Dichotomy\n\n\n");
     return x_;
-}
-
-/**
- * Функция нормализации интервала
- * @param *a - левый конец локализованого интервала
- * @param *b - правый конец локализованого интервала
- */
-void intervalNormalization(double &a, double &b) {
-    if (a > b) {
-        std::swap(a, b);
-    }
 }
 
 /**
@@ -177,7 +170,6 @@ double goldenSectionNum2(double &a1, double &b1, double (*f)(double), double m, 
         x2 = b1 + a1 - x1;
         f1 = f(x1);
         f2 = f(x2);
-        printf("k: %d; a1: %0.7f; b1: %0.7f; x1: %0.7f; x2: %0.7f; f1: %0.7f; f2: %0.7f;\n", k, a1, b1, x1, x2, f1, f(x2));
         if (x1 < x2 && f1 < f2) {
             b1 = x2;
         } else if (x1 < x2 && f1 > f2) {
@@ -251,7 +243,6 @@ double methodFibonacci1(double &a1, double &b1, double (*f)(double), double Ln) 
     int n;
     double Fn = getPrevNumberFibonacci(abs(a1 - b1) / Ln, n), Fnm = getNNumberFibonacci(n - 1), Fnmm = Fn - Fnm, Fnp = Fn + Fnm;
     double delta = abs(b1 - a1) / Fnp;
-    std::cout << "delta: " << delta <<std::endl;
     double x1 = a1 + abs(b1 - a1) * Fnmm / Fn,
             x2 = a1 + abs(b1 - a1) * Fnm / Fn,
             f1, f2;
@@ -259,9 +250,6 @@ double methodFibonacci1(double &a1, double &b1, double (*f)(double), double Ln) 
     do {
         f1 = f(x1);
         f2 = f(x2);
-        std::cout << k << "  Fn: " << Fn << " Fnm: " << Fnm << " Fnmm: " << Fnmm << std::endl
-                  << "a1: " << a1 << " x1: " << x1 << " x2: " << x2 << " b1: " << b1 << std::endl
-                  << "f1: " << f1 << " f2: " << f2 << std::endl;
         Fn = Fnm;
         Fnm = Fnmm;
         Fnmm = Fn - Fnm;
@@ -293,6 +281,7 @@ double methodFibonacci1(double &a1, double &b1, double (*f)(double), double Ln) 
  * @return аппроксимированный минимум
  */
 double methodFibonacci2(double &a1, double &b1, double (*f)(double), double Ln, double eps) {
+    printf("Start method Fib2\n");
     int n;
     double Fn = getPrevNumberFibonacci(abs(a1 - b1) / Ln, n), Fnm = getNNumberFibonacci(n - 1);
     std::cout << "n: " << n << "  Fn: " << Fn << " Fnm: " << Fnm << std::endl;
@@ -319,6 +308,7 @@ double methodFibonacci2(double &a1, double &b1, double (*f)(double), double Ln, 
         }
         k++;
     } while (k < n);
+    printf("End method Fib2\n\n\n");
     return x1;
 }
 

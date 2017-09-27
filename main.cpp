@@ -1,68 +1,40 @@
 #include <iostream>
 #include "cmath"
-#include "library.h"
+#include "src/Methods/Composer/ComposerMethods.h"
+#include "src/Core.h"
 
-double f_lab1(double x);
-double f_lab2(double x);
+double f(double x);
 
-void lab1(double (*f)(double), double x1, double eps);
-void lab2(double (*f)(double), double x1, double eps);
-void zadanie1(double (*f)(double), double x1, double eps);
+Params createParams();
 
 int main() {
-    //lab1(f_lab1, 1, 1e-2);
-    lab2(f_lab2, 2, 1e-2);
-    //zadanie1(f_lab1, 1, 1e-2);
+    Core::load();
+    std::list<std::string> list = Core::getNamesListMethodsOneDimSearch();
+    Params p = createParams();
+    for (std::string name: list) {
+        Core::runMODS(name, p);
+    }
+    printf(p.logs.c_str());
     return 0;
 }
 
-double f_lab1(double x) {
+double f(double x) {
     return 2 * x * x + 16.0 / x;
 }
 
-double f_lab2(double x) {
+Params createParams() {
+    Params p;
 
-    return pow(10.0 * pow(x, 3.0) + 3.0 * pow(x, 2.0) + x + 5.0, 2.0);
-}
+    p.input.m = 20;
+    p.input.f = f;
+    p.input.x1 = 1;
+    p.input.eps_f = 1e-7;
+    p.input.eps_arg = 1e-7;
 
-void lab1(double (*f)(double), double x1, double eps){
-    double a1, b1, a, b;
-    double x_, fx_;
-    printf("Laboratory work number 1\n");
-    printf("Perform student of group 5301 Nebotov D.S.\n\n");
-    x_ = swenn(x1, a1, b1, f);
-    a = a1; b = b1;
-    x_ = midpointMethod(a1, b1, f, eps);
-    a1 = a; b1 = b;
-    x_ = goldenSectionNum1(a1, b1, f, 20, eps);
+    p.flags.hainComputing = 0;
+    p.flags.eps_f = 0;
+    p.flags.eps_arg = 1;
+    p.flags.m = 0;
 
-}
-
-void lab2(double (*f)(double), double x1, double eps){
-    double a1, b1;
-    double x_, fx_;
-    printf("Laboratory work number 2\n");
-    printf("Perform student of group 5301 Nebotov D.S.\n\n");
-
-    x_ = swenn(x1, a1, b1, f);
-    x_ = methodSecants(a1, b1, f, eps);
-    x_ = methodOfCubicInterpolation(x1, a1, b1, f, eps, 0.01 * x1);
-}
-
-void zadanie1(double (*f)(double), double x1, double eps){
-    double a1, b1, a, b;
-    double x_, fx_;
-    printf("Zadanie number 1\n");
-    printf("Perform student of group 5301 Nebotov D.S.\n\n");
-
-    x_ = swenn(x1, a1, b1, f);
-
-    a = a1; b = b1;
-
-    x_ = goldenSectionNum1(a1, b1, f, 20, eps);
-
-    a1 = a; b1 = b;
-
-    x_ = methodPowellA2PI(a1, b1, f, eps, eps);
-
+    return p;
 }
