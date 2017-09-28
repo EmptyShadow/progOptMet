@@ -8,6 +8,7 @@
 #include "vector"
 #include "stdio.h"
 #include "string"
+#include "../Vars/Vector.h"
 
 class OutputParams {
 public:
@@ -15,9 +16,11 @@ public:
     ~OutputParams();
 
     int k = 0; // количество пройденных итераций
-    double x_ = 0.0; // аргумент, в котором функция принимает минимум на заданном интервале.
-    double f_x_ = 0.0; // минимум функции
-    std::vector<double> intervalPoints = {}; // точки интервала локализации
+    Vector x_; // аргумент, в котором функция принимает минимум на заданном интервале.
+    double f_x_; // минимум функции
+
+    Vector intervalStapsLocal; // интервал шага локализации
+    std::vector<Vector> intervalLocal; // интервал локализации
 
     std::string toString();
     OutputParams clone();

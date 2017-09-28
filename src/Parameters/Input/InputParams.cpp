@@ -7,31 +7,45 @@ InputParams::~InputParams() {}
 std::string InputParams::toString() {
     char number[15];
     std::string str = "Input Parameters:\n";
-    sprintf(number, "%d", m);
-    str += "\tm: " + (std::string)number + ";\n";
-    sprintf(number, "%0.10f", x1);
-    str += "\tx1: " + (std::string)number + ";\n";
-    sprintf(number, "%0.10f", eps_arg);
-    str += "\teps_arg: " + (std::string)number + ";\n";
-    sprintf(number, "%0.10f", eps_f);
-    str += "\teps_f: " + (std::string)number + ";\n";
-    str += "\tintervalPoints:";
-    for (double val : intervalPoints) {
-        sprintf(number, "%0.10f", val);
-        str+= " " + (std::string)number;
+
+    sprintf(number, "\tm: %d;\n", m);
+    str += number;
+
+    sprintf(number, "\tx1: %s;\n", x1.toString().c_str());
+    str += number;
+
+    str += "\tDirection:\n\t\t";
+    str += direction.toString();
+
+    str += "\tInterval staps local\n\t\t";
+    str += intervalStapsLocal.toString();
+
+    str += "\tInterval staps local\n";
+    for (int i = 0; i < intervalLocal.size(); ++i) {
+        sprintf(number, "\t\t%s\n", intervalLocal[i].toString().c_str());
+        str += number;
     }
-    str += ";\n";
+
+    sprintf(number, "\teps_arg: %0.10f;\n", eps_arg);
+    str += number;
+
+    sprintf(number, "\teps_f: %0.10f;\n", eps_f);
+    str += number;
+
     return str;
 }
 
 InputParams InputParams::clone() {
     InputParams input;
     input.m = m;
+    input.x1 = x1;
+    input.direction = direction;
+    input.intervalStapsLocal = intervalStapsLocal;
+    input.intervalLocal = std::vector<Vector>(intervalLocal);
     input.eps_arg = eps_arg;
     input.eps_f = eps_f;
-    input.x1 = x1;
-    for (int i = 0; i < intervalPoints.size(); i++) {
-        input.intervalPoints.push_back(intervalPoints[i]);
-    }
+
     input.f = f;
+
+    return input;
 }

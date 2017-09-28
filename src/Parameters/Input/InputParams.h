@@ -8,6 +8,7 @@
 #include "vector"
 #include "stdio.h"
 #include "string"
+#include "../Vars/Vector.h"
 
 class InputParams {
 public:
@@ -15,9 +16,11 @@ public:
     ~InputParams();
 
     int m = 0; // ограничение по количеству итераций
-    double x1 = 0.0; // стартовая точка
-    std::vector<double> intervalPoints = {}; // начальный интервал локализации
-    double (*f)(double) = nullptr; // функция
+    Vector x1; // стартовая точка
+    Vector direction; // начальное направление
+    Vector intervalStapsLocal; // интервал шага локализации
+    std::vector<Vector> intervalLocal; // интервал локализации
+    Vector (*f)(Vector) = nullptr; // функция
     double eps_arg = 0.0; // погрешность по аргументам
     double eps_f = 0.0; // погрешнасть по значениям функции
     std::string toString();

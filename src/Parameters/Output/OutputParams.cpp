@@ -7,18 +7,24 @@ OutputParams::~OutputParams() {}
 std::string OutputParams::toString() {
     char number[15];
     std::string rez = "Output Parameters:\n";
-    sprintf(number, "%d", k);
-    rez += "\tk: " + (std::string)number + ";\n";
-    sprintf(number, "%0.10f", x_);
-    rez += "\tx_: " + (std::string)number + ";\n";
-    sprintf(number, "%0.10f", f_x_);
-    rez += "\tf_x_: " + (std::string)number + ";\n";
-    rez += "\tintervalPoints:";
-    for (double val : intervalPoints) {
-        sprintf(number, "%0.10f", val);
-        rez += " " + (std::string)number;
+
+    sprintf(number, "\tk: %d;\n", k);
+    rez += number;
+
+    rez += "\tX_:\n\t\t";
+    rez += x_.toString();
+
+    rez += "\tInterval staps local\n\t\t";
+    rez += intervalStapsLocal.toString();
+
+    rez += "\tInterval staps local\n";
+    for (int i = 0; i < intervalLocal.size(); ++i) {
+        sprintf(number, "\t\t%s\n", intervalLocal[i].toString().c_str());
+        rez += number;
     }
-    rez += ";\n";
+
+    sprintf(number, "\tf_x_: %d;\n", f_x_);
+    rez += number;
 
     return rez;
 }
@@ -28,7 +34,7 @@ OutputParams OutputParams::clone() {
     output.k = k;
     output.f_x_ = f_x_;
     output.x_ = x_;
-    for (int i = 0; i < intervalPoints.size(); i++) {
-        output.intervalPoints.push_back(intervalPoints[i]);
-    }
+    output.intervalStapsLocal = intervalStapsLocal;
+    output.intervalLocal = std::vector(intervalLocal);
+    return output;
 }

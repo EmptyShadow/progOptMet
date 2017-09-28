@@ -6,6 +6,8 @@
 #define PROGOPTMET_VECTOR_H
 
 #include "vector"
+#include "string"
+#include "math.h"
 
 class Vector {
 public:
@@ -95,6 +97,18 @@ public:
      * @return
      */
     Vector clone();
+
+    /**
+     * К виду строки
+     * @return
+     */
+    std::string toString();
+
+    /**
+     * Норма веектора
+     * @return
+     */
+    double norma();
 
 private:
     std::vector<double> vars; // карта переменных
