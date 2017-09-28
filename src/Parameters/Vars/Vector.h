@@ -19,54 +19,47 @@ public:
     /**
      * Сложение элементов векторов
      */
-    void operator+(Vector&);
+    Vector operator+(Vector);
 
     /**
      * Разность элементов векторов
      */
-    void operator-(Vector&);
+    Vector operator-(Vector);
 
     /**
      * Умножение вектора на скаляр
      */
-    void operator*(double);
+    Vector operator*(double);
 
     /**
      * Умножение вектора на скаляр
      */
-    void operator*=(double);
+    Vector operator*=(double);
 
     /**
      * Деление вектора на скаляр
      */
-    void operator/(double);
+    Vector operator/(double);
 
     /**
      * Деление вектора на скаляр
      */
-    void operator/=(double);
+    Vector operator/=(double);
 
     /**
      * Сложение элементов векторов
      */
-    void operator+=(Vector&);
+    Vector operator+=(Vector);
 
     /**
      * Разность элементов векторов
      */
-    void operator-=(Vector&);
+    Vector operator-=(Vector);
 
     /**
      * Скалярное произведение векторов
      */
-    double operator*(Vector&);
-
-    /**
-     * Скалярное произведение векторов
-     */
-    double operator*=(Vector&);
-
-
+    double operator*(Vector);
 
     /**
      * Добавление var в конец
@@ -87,7 +80,21 @@ public:
      */
     double operator[](int i);
 
+    /**
+     * Присваивание вектора
+     */
+    void operator=(std::vector);
 
+    /**
+     * присваивание одного элемента
+     */
+    void operator=(double);
+
+    /**
+     * Клонирование вектора
+     * @return
+     */
+    Vector clone();
 
 private:
     std::vector<double> vars; // карта переменных
