@@ -26,22 +26,15 @@ public:
      * @param name
      * @return
      */
-    virtual Method *getMethodByName(std::string name) {
-        return nullptr;
-    }
+    virtual Method *getMethodByName(std::string name);
 
     /**
      * Добавление метода в компановщик
      * @param method
      */
-    virtual void addMethod(Method* method) {
-        assert(false);
-    }
+    virtual void addMethod(Method* method);
 
-    /**
-     *
-     */
-    virtual ~Method() {}
+    virtual ~Method();
 };
 
 

@@ -6,11 +6,20 @@
 #define PROGOPTMET_FUNC_H
 
 #include "string"
+#include "../Parameters/Vars/Vector.h"
+#include "../Parser/MathParser.h"
 
 class Func {
 public:
-    double run();
-    std::string func = "";
+    std::string func = ""; // функция
+
+    Func(std::string func);
+
+    /**
+     * Функция запуска на исполнение
+     * @return
+     */
+    virtual double y(Vector &params);
 };
 
 
