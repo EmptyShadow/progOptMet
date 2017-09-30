@@ -121,3 +121,11 @@ double Vector::norma() {
 
     return sqrt(norm);
 }
+
+Vector Vector::random(int n, int absMax) {
+    Vector v;
+    for (int i = 0; i < n; ++i) {
+        v.push(rand() % ((absMax + 1) * 2) - absMax);
+    }
+    return v;
+}

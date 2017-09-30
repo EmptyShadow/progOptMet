@@ -2,11 +2,20 @@
 
 Func::Func(std::string func) {
     this->func = func;
+    if (!func.compare("")) {
+        throw "Error: empty function;";
+    }
+    this->vars = MathParser::getListVars(func);
+
+    Vector params = Vector::random(vars.size(), 10);
+    y(params);
 }
 
 double Func::y(Vector &params) {
-    // подставляю вектор переменных в функцию
-    std::string term = MathParser::insertParams(func, params);
+    if (vars.size() != params.size()) {
+        throw "Error: Size vector != size variable func;";
+    }
+    MathParser parser((*this), params);
     // вычисляю и возвращаю значение
-    return MathParser::parse(term);
+    return parser.parse();
 }

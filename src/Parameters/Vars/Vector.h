@@ -110,6 +110,8 @@ public:
      */
     double norma();
 
+    static Vector random(int n, int absMax);
+
 private:
     std::vector<double> vars; // карта переменных
 };
