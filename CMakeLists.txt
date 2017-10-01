@@ -24,5 +24,5 @@ set(SOURCE_FILES src/library.cpp src/library.h
         src/Func/Func.cpp src/Func/Func.h
         src/Parser/MathParser.cpp src/Parser/MathParser.h
         src/Parser/Result.cpp src/Parser/Result.h
-        )
+        src/String/String.cpp src/String/String.h)
 add_executable(progOptMet ${SOURCE_FILES})

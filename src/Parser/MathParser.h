@@ -7,8 +7,11 @@
 
 #include "Result.h"
 #include "../Func/Func.h"
-#include "list"
+#include "set"
 #include "map"
+#include "../String/String.h"
+#include <regex>
+#include "math.h"
 
 class MathParser {
 public:
@@ -26,51 +29,83 @@ public:
      * @param func
      * @return
      */
-    static std::list<std::string> getListVars(std::string func);
+    static std::set<std::string> getSetVars(std::string func);
 
 private:
     std::map<std::string, double> vars; // карта переменных и значений
+    std::string func;
     /**
      * Разбор сложения и вычитания
      * @param s
      * @return
      */
-    static Result PlusMinus(std::string s) throw(std::string);
+    Result PlusMinus(std::string s) throw(std::string);
 
     /**
      * Разбор умножения и деления
      * @param s
      * @return
      */
-    static Result MulDiv(std::string s) throw(std::string);
+    Result MulDiv(std::string s) throw(std::string);
+
+    Result Degree(std::string s) throw(std::string);
 
     /**
      * Разбор скобок
      * @param s
      * @return
      */
-    static Result Braket(std::string s) throw(std::string);
+    Result Bracket(std::string s) throw(std::string);
 
     /**
      * Символ буква?
      * @param ch
      * @return
      */
-    static bool isLetter(char ch) throw(std::string);
+    static bool isLetter(char ch);
 
     /**
      * Символ число?
      * @param ch
      * @return
      */
-    static bool isDigit(char ch) throw(std::string);
+    static bool isDigit(char ch);
+
+    /**
+     * Символ оператор?
+     * @param ch
+     * @return
+     */
+    static bool isOperator(char ch);
 
     /**
      * Разбор функции или переменной
      * @param s
      * @return
      */
-    static Result FunctionVariable(std::string s) throw(std::string);
+    Result FunctionVariable(std::string s) throw(std::string);
+
+    /**
+     * Получение числа из строки
+     * @param s
+     * @return
+     */
+    static Result Num(std::string s) throw(std::string);
+
+    /**
+     * Получение значение по имени
+     * @param varName
+     * @return
+     */
+    double getVariable(std::string varName) throw(std::string);
+
+    /**
+     * Запуск на исполнение функции
+     * @param func
+     * @param r
+     * @return
+     */
+    Result processFunction(std::string func, Result r);
 };
 
 

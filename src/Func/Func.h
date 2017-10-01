@@ -8,13 +8,14 @@
 #include "string"
 #include "../Parameters/Vars/Vector.h"
 #include "../Parser/MathParser.h"
-#include "list"
+#include "set"
 #include "exception"
+#include "../String/String.h"
 
 class Func {
 public:
     std::string func = ""; // функция
-    std::list<std::string> vars; // переменные
+    std::set<std::string> vars; // переменные
 
     Func(std::string func) throw(std::string);
 
@@ -23,8 +24,6 @@ public:
      * @return
      */
     virtual double y(Vector &params) throw(std::string);
-
-    std::list<std::string> listVars;
 
 };
 
