@@ -48,6 +48,11 @@ private:
      */
     Result MulDiv(std::string s) throw(std::string);
 
+    /**
+     * Разбор операции возведения в степень
+     * @param s
+     * @return
+     */
     Result Degree(std::string s) throw(std::string);
 
     /**
