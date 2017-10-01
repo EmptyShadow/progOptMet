@@ -1,15 +1,23 @@
 #include "Func.h"
 
 Func::Func(std::string func) {
+    setFunc(func);
+}
+
+void Func::setFunc(std::string func) {
     String::replaceAll(func, ' ', '');
-    this->func = func;
     if (!func.compare("")) {
         throw "Error: empty function;";
     }
+    this->func = func;
     this->vars = MathParser::getSetVars(func);
 
+    inRandomVector();
+}
+
+double Func::inRandomVector() {
     Vector params = Vector::random(vars.size(), 10);
-    y(params);
+    return y(params);
 }
 
 double Func::y(Vector &params) {

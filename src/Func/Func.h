@@ -20,6 +20,18 @@ public:
     Func(std::string func) throw(std::string);
 
     /**
+     * Изменить функцию
+     * @param func
+     */
+    void setFunc(std::string func) throw(std::string);
+
+    /**
+     * Вычислить функцию в случайной точке
+     * @return
+     */
+    double inRandomVector() throw(std::string);
+
+    /**
      * Функция запуска на исполнение
      * @return
      */
