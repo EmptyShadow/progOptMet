@@ -11,9 +11,15 @@ public:
      * @param ch
      * @param with
      */
-    static void replaceAll(std::string &s, char ch, char with);
+    static void removeAll(std::string *s, char &&ch);
 
-    static bool stringStartAt(std::string s, std::string at);
+    /**
+     * Сравнение проверка совпадения начала строки s со строкой at
+     * @param s
+     * @param at
+     * @return
+     */
+    static bool stringStartAt(std::string *s, std::string &&at);
 };
 
 

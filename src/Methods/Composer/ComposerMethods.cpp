@@ -18,19 +18,19 @@ void ComposerMethods::addMethod(Method *method) {
     }
 }
 
-Method *ComposerMethods::getMethodByName(std::string name) {
+Method *ComposerMethods::getMethodByName(std::string *name) {
     /**
      * Проходим весь список и ищим ключ с именем поиска
      */
     for (Method *method : listMs) {
-        if (!method->name.compare(name)) {
+        if (!method->name.compare(*name)) {
             return method;
         }
     }
     return nullptr;
 }
 
-int ComposerMethods::run(Params &params) {
+int ComposerMethods::run(Params *params) {
     /**
      * Вызываем все методы из списка в порядке добавления
      */
@@ -43,10 +43,10 @@ int ComposerMethods::run(Params &params) {
     return 0;
 }
 
-std::list<std::string> ComposerMethods::getNamesMethods() {
-    std::list<std::string> list;
+std::list<std::string> *ComposerMethods::getNamesMethods() {
+    std::list<std::string> *list = new std::list<std::string>();
     for (Method *method : listMs) {
-        list.push_back(method->name);
+        list->push_back(method->name);
     }
     return list;
 }

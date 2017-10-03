@@ -5,8 +5,6 @@
 #ifndef PROGOPTMET_LIMITINGFLAGS_H
 #define PROGOPTMET_LIMITINGFLAGS_H
 
-#include "vector"
-#include "stdio.h"
 #include "string"
 
 class LimitingFlags {
@@ -18,8 +16,8 @@ public:
     bool eps_arg = true; // ограничение по погрешности аргументов
     bool eps_f = true; // ограничение по погрешности значений функции
     bool m = false; // ограничение по количеству итераций
-    std::string toString();
-    LimitingFlags clone();
+    std::string *toString();
+    LimitingFlags *clone();
 };
 
 

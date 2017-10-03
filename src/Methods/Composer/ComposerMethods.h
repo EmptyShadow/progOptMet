@@ -5,9 +5,10 @@
 #ifndef PROGOPTMET_COMPOSERMETHODS_H
 #define PROGOPTMET_COMPOSERMETHODS_H
 
-#include "../Method.h"
 #include "string"
 #include "list"
+
+#include "../Method.h"
 
 /**
  * Компановщик методов
@@ -26,21 +27,21 @@ public:
      * @param name
      * @return
      */
-    Method *getMethodByName(std::string name);
+    Method *getMethodByName(std::string *name);
 
     /**
      * Запустить все методы на исполнение
      * @param params
      * @return
      */
-    int run(Params &params);
+    int run(Params *params);
 
     /**
      * Отчистить методы
      */
     ~ComposerMethods();
 
-    std::list<std::string> getNamesMethods();
+    std::list<std::string> *getNamesMethods();
 
 private:
     std::list<Method *> listMs; // скомпонованные методы

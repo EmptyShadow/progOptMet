@@ -1,37 +1,33 @@
 #include "String.h"
+#include "algorithm"
 
-void String::replaceAll(std::string &s, char ch, char with) {
-    // Если символы совпадают, то ничего не делаем
-    if (ch == with) {
-        return;
-    }
-
+void String::removeAll(std::string *s, char &&ch) {
     // проходим по строке и меняем символы
     unsigned int i = 0;
-    while (i < s.length()) {
-        if (s[i] == ch) {
+    while (i < s->length()) {
+        if (s->at(i) == ch) {
             // Считаю сколько совпадений с этим символом
             unsigned int t = 1;
-            while (s[i + t] == ch) {
+            while (s->at(i + t) == ch) {
                 t++;
             }
             // меняю блок символов
-            s.replace(i, t, (const char*)&with);
+            s->erase(i, t);
         } else {
             i++;
         }
     }
 }
 
-bool String::stringStartAt(std::string s, std::string at) {
+bool String::stringStartAt(std::string *s, std::string &&at) {
     // если строка, в которой проверяется начало, короче
     // предпологаемого начала, то вернуть false
-    if (s.length() < at.length()) {
+    if (s->length() < at.length()) {
         return false;
     }
     // Сопоставляем символы, если какие то символы не равно то вернуть false
     for (int i = 0; i < at.size(); ++i) {
-        if (s[i] != at[i]) {
+        if (s->at(i) != at.at(i)) {
             return false;
         }
     }

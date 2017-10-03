@@ -1,40 +1,41 @@
 #include "OutputParams.h"
+#include "../Vars/Vector.h"
 
 OutputParams::OutputParams() {}
 
-OutputParams::~OutputParams() {}
+OutputParams::~OutputParams() {
+    delete x_;
+    delete alfa;
+}
 
-std::string OutputParams::toString() {
+std::string *OutputParams::toString() {
     char number[15];
-    std::string rez = "Output Parameters:\n";
+    std::string *rez = new std::string("Output Parameters:\n");
 
     sprintf(number, "\tk: %d;\n", k);
-    rez += number;
+    (*rez) += number;
 
-    rez += "\tX_:\n\t\t";
-    rez += x_.toString();
+    (*rez) += "\tx_:\n\t\t";
+    (*rez) += *(x_->toString());
 
-    rez += "\tInterval staps local\n\t\t";
-    rez += intervalStapsLocal.toString();
+    sprintf(number, "\tf_x_: %0.10f;\n", f_x_);
+    (*rez) += number;
 
-    rez += "\tInterval staps local\n";
-    for (int i = 0; i < intervalLocal.size(); ++i) {
-        sprintf(number, "\t\t%s\n", intervalLocal[i].toString().c_str());
-        rez += number;
-    }
+    (*rez) += "\talfa:\n\t\t";
+    (*rez) += *(alfa->toString());
 
-    sprintf(number, "\tf_x_: %d;\n", f_x_);
-    rez += number;
+    sprintf(number, "\talfa_h: %0.10f;\n", alfa_h);
+    (*rez) += number;
 
     return rez;
 }
 
-OutputParams OutputParams::clone() {
-    OutputParams output;
-    output.k = k;
-    output.f_x_ = f_x_;
-    output.x_ = x_;
-    output.intervalStapsLocal = intervalStapsLocal;
-    output.intervalLocal = std::vector(intervalLocal);
+OutputParams *OutputParams::clone() {
+    OutputParams *output = new OutputParams();
+    output->k = k;
+    output->x_ = x_ != nullptr ? x_->clone() : x_;
+    output->f_x_ = f_x_;
+    output->alfa = alfa != nullptr ? alfa->clone() : alfa;
+    output->alfa_h = alfa_h;
     return output;
 }

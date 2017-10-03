@@ -1,30 +1,39 @@
 #include "Func.h"
+#include "../String/String.h"
+#include "../Parameters/Vars/Vector.h"
+#include "../Parser/MathParser.h"
 
-Func::Func(std::string func) {
-    setFunc(func);
+Func::Func(std::string *func) throw(std::string*) {
+    this->func = func->substr(0);
+    setFunc(&(this->func));
 }
 
-void Func::setFunc(std::string func) {
-    String::replaceAll(func, ' ', '');
-    if (!func.compare("")) {
-        throw "Error: empty function;";
+Func::~Func() {}
+
+void Func::setFunc(std::string *func) throw(std::string*) {
+    std::string f = func->substr(0);
+    String::removeAll(&f, ' ');
+    if (!f.compare("")) {
+        throw new std::string("Error: empty function;");
     }
-    this->func = func;
-    this->vars = MathParser::getSetVars(func);
-
-    inRandomVector();
+    this->func = f;
+    vars.clear();
+    vars = *(MathParser::getSetVars(&f));
 }
 
-double Func::inRandomVector() {
-    Vector params = Vector::random(vars.size(), 10);
-    return y(params);
-}
-
-double Func::y(Vector &params) {
-    if (vars.size() != params.size()) {
-        throw "Error: Size vector != size variable function;";
-    }
-    MathParser parser((*this), params);
+double Func::y(Vector *params) throw(std::string*) {
+    MathParser parser(this, params);
     // вычисляю и возвращаю значение
     return parser.parse();
+}
+
+double Func::inRandomVector() throw(std::string*) {
+    Vector v = *(Vector::random(vars.size(), 10));
+    return y(&v);
+}
+
+Func *Func::clone() {
+    std::string f = func.substr(0);
+    Func *n = new Func(&f);
+    return n;
 }

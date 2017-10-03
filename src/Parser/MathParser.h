@@ -5,31 +5,32 @@
 #ifndef PROGOPTMET_MATHPARSER_H
 #define PROGOPTMET_MATHPARSER_H
 
-#include "Result.h"
-#include "../Func/Func.h"
-#include "set"
 #include "map"
-#include "../String/String.h"
-#include <regex>
-#include "math.h"
+#include "string"
+#include "set"
+#include "Result.h"
+
+class Vector;
+
+class Func;
 
 class MathParser {
 public:
-    MathParser(Func &func, Vector &params) throw(std::string);
+    MathParser(Func *func, Vector *params);
 
     /**
      * Начало вычисления функции
      * @param func
      * @return
      */
-    double parse() throw(std::string);
+    double parse() throw(std::string*);
 
     /**
      * Получение списка уникальных переменных в функции
      * @param func
      * @return
      */
-    static std::set<std::string> getSetVars(std::string func);
+    static std::set<std::string> *getSetVars(std::string *func);
 
 private:
     std::map<std::string, double> vars; // карта переменных и значений
@@ -39,28 +40,28 @@ private:
      * @param s
      * @return
      */
-    Result PlusMinus(std::string s) throw(std::string);
+    Result PlusMinus(std::string s) throw(std::string*);
 
     /**
      * Разбор умножения и деления
      * @param s
      * @return
      */
-    Result MulDiv(std::string s) throw(std::string);
+    Result MulDiv(std::string s) throw(std::string*);
 
     /**
      * Разбор операции возведения в степень
      * @param s
      * @return
      */
-    Result Degree(std::string s) throw(std::string);
+    Result Degree(std::string s) throw(std::string*);
 
     /**
      * Разбор скобок
      * @param s
      * @return
      */
-    Result Bracket(std::string s) throw(std::string);
+    Result Bracket(std::string s) throw(std::string*);
 
     /**
      * Символ буква?
@@ -88,21 +89,21 @@ private:
      * @param s
      * @return
      */
-    Result FunctionVariable(std::string s) throw(std::string);
+    Result FunctionVariable(std::string s) throw(std::string*);
 
     /**
      * Получение числа из строки
      * @param s
      * @return
      */
-    static Result Num(std::string s) throw(std::string);
+    static Result Num(std::string s) throw(std::string*);
 
     /**
      * Получение значение по имени
      * @param varName
      * @return
      */
-    double getVariable(std::string varName) throw(std::string);
+    double getVariable(std::string varName) throw(std::string*);
 
     /**
      * Запуск на исполнение функции

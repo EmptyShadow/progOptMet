@@ -5,10 +5,9 @@
 #ifndef PROGOPTMET_OUTPUTPARAMS_H
 #define PROGOPTMET_OUTPUTPARAMS_H
 
-#include "vector"
-#include "stdio.h"
 #include "string"
-#include "../Vars/Vector.h"
+
+class Vector;
 
 class OutputParams {
 public:
@@ -16,14 +15,14 @@ public:
     ~OutputParams();
 
     int k = 0; // количество пройденных итераций
-    Vector x_; // аргумент, в котором функция принимает минимум на заданном интервале.
+    Vector *x_ = nullptr; // аргумент, в котором функция принимает минимум на заданном интервале.
     double f_x_; // минимум функции
 
-    Vector intervalStapsLocal; // интервал шага локализации
-    std::vector<Vector> intervalLocal; // интервал локализации
+    Vector *alfa = nullptr; // интервал приближения к минимуму
+    double alfa_h = 0.01; //
 
-    std::string toString();
-    OutputParams clone();
+    std::string *toString();
+    OutputParams *clone();
 };
 
 

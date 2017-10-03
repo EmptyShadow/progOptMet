@@ -5,17 +5,10 @@
 #ifndef PROGOPTMET_CORE_H
 #define PROGOPTMET_CORE_H
 
-#include "Methods/Composer/ComposerMethods.h"
-#include "Methods/Method.h"
-#include "Methods/OneDimensionalSearch/Swenn/Swenn.h"
-#include "Methods/OneDimensionalSearch/GoldenSection/GoldenSection1/GoldenSection1.h"
-#include "Methods/OneDimensionalSearch/GoldenSection/GoldenSection2/GoldenSection2.h"
-#include "Methods/OneDimensionalSearch/Fibonacci/Fibonacci1/Fibonacci1.h"
-#include "Methods/OneDimensionalSearch/Fibonacci/Fibonacci2/Fibonacci2.h"
-#include "Methods/OneDimensionalSearch/Dichotomy/Dichotomy.h"
-
 #include "list"
-#include "string"
+
+class Params;
+class Method;
 
 class Core {
 public:

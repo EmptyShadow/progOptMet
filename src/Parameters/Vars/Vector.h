@@ -5,13 +5,14 @@
 #ifndef PROGOPTMET_VECTOR_H
 #define PROGOPTMET_VECTOR_H
 
-#include "vector"
 #include "string"
-#include "math.h"
+#include "vector"
 
 class Vector {
 public:
     Vector();
+
+    ~Vector();
 
     /***
      * Если в методах перегруженных операций два вектора имеют разный размер,
@@ -21,12 +22,12 @@ public:
     /**
      * Сложение элементов векторов
      */
-    Vector operator+(Vector);
+    Vector operator+(Vector&&);
 
     /**
      * Разность элементов векторов
      */
-    Vector operator-(Vector);
+    Vector operator-(Vector&&);
 
     /**
      * Умножение вектора на скаляр
@@ -51,17 +52,17 @@ public:
     /**
      * Сложение элементов векторов
      */
-    Vector operator+=(Vector);
+    Vector operator+=(Vector&&);
 
     /**
      * Разность элементов векторов
      */
-    Vector operator-=(Vector);
+    Vector operator-=(Vector&&);
 
     /**
      * Скалярное произведение векторов
      */
-    double operator*(Vector);
+    double operator*(Vector&&);
 
     /**
      * Добавление var в конец
@@ -83,11 +84,6 @@ public:
     double operator[](int i);
 
     /**
-     * Присваивание вектора
-     */
-    void operator=(std::vector);
-
-    /**
      * присваивание одного элемента
      */
     void operator=(double);
@@ -96,13 +92,13 @@ public:
      * Клонирование вектора
      * @return
      */
-    Vector clone();
+    Vector *clone();
 
     /**
      * К виду строки
      * @return
      */
-    std::string toString();
+    std::string *toString();
 
     /**
      * Норма веектора
@@ -110,10 +106,26 @@ public:
      */
     double norma();
 
-    static Vector random(int n, int absMax);
+    /**
+     * Получение случайного вектора
+     * @param n
+     * @param absMax
+     * @return
+     */
+    static Vector *random(int n, int absMax);
+
+    /**
+     * Получение нулевого вектора кроме i-ого
+     * @param n
+     * @param i
+     * @return
+     */
+    static Vector *getZeroBeside(int n, int i);
+
+    void setAt(int i, double val);
 
 private:
-    std::vector<double> vars; // карта переменных
+    std::vector<double> vars;// карта переменных
 };
 
 

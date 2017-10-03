@@ -1,38 +1,43 @@
 #include "MathParser.h"
+#include "../Func/Func.h"
+#include "../String/String.h"
+#include "../Parameters/Vars/Vector.h"
+#include "math.h"
 
-MathParser::MathParser(Func &func, Vector &params) {
+MathParser::MathParser(Func *func, Vector *params) {
     // Проверка на совпадение размеров
-    if (func.vars.size() != params.size()) {
+    if (func->vars.size() != params->size()) {
         throw "Error: size variable function != size params";
     }
     // соединение переменных функции и соотв им элементам вектора
     int i = 0;
-    for (std::string var: func.vars) {
-        vars.insert(std::pair<std::string, double>(var, params[i]));
+    for (std::string var: func->vars) {
+        vars.insert(std::pair<std::string, double>(var, (*params)[i]));
         i++;
     }
     // сохранение функции в строковом виде
-    this->func = func.func.substr(0);
+    this->func = func->func.substr(0);
 }
 
-std::set<std::string> MathParser::getSetVars(std::string func) {
-    String::replaceAll(func, ' ', '');
-    std::set<std::string> set;
-    unsigned int i = 0, len = func.size();
+std::set<std::string> *MathParser::getSetVars(std::string *func) {
+    std::string f = func->substr(0);
+    String::removeAll(&f, ' ');
+    std::set<std::string> *set = new std::set<std::string>();
+    unsigned int i = 0, len = f.length();
     // Проходим функцию в поиске переменных
     while (i < len) {
         // то это может быть переменная или функция
         unsigned int t = i + 1;
         // если нам попался символ
-        if (isLetter(func[i])) {
+        if (isLetter(f[i])) {
             // идем до конца названия
-            while (t < len && (isLetter(func[t] || isDigit(func[t])))) {
+            while (t < len && (isLetter(f[t] || isDigit(f[t])))) {
                 t++;
             }
             // после имени переменной должен идти оператор или ) или конец функции
-            if (t < len && (isOperator(func[t]) || func[t] == '(' || t == (len - 1))) {
+            if (t < len && (isOperator(f[t]) || f[t] == '(' || t == (len - 1))) {
                 // вставляю подстроку - имя переменной в множество
-                set.insert(func.substr(i, t - i));
+                set->insert(func->substr(i, t - i));
             }
         }
         i = t;
@@ -62,7 +67,7 @@ bool MathParser::isOperator(char ch) {
     return false;
 }
 
-double MathParser::parse() {
+double MathParser::parse() throw(std::string*) {
     Result rez = PlusMinus(func);
     // Если остаток функции остался не пустым
     if (!rez.rest.empty()) {
@@ -72,7 +77,7 @@ double MathParser::parse() {
     return rez.acc;
 }
 
-Result MathParser::PlusMinus(std::string s) {
+Result MathParser::PlusMinus(std::string s) throw(std::string*) {
     // переход на более преоритетные операции умножения и деления
     Result current = MulDiv(s);
     // получаем результат преоритетных операций
@@ -104,7 +109,7 @@ Result MathParser::PlusMinus(std::string s) {
     return Result(acc, current.rest);
 }
 
-Result MathParser::MulDiv(std::string s) {
+Result MathParser::MulDiv(std::string s) throw(std::string*) {
     // переход к более преоритетным операциям скобкам
     Result current = Degree(s);
     // получение результата в скобках, если они были
@@ -135,7 +140,7 @@ Result MathParser::MulDiv(std::string s) {
     return Result(acc, current.rest);
 }
 
-Result MathParser::Bracket(std::string s) {
+Result MathParser::Bracket(std::string s) throw(std::string*) {
     // Если встретили скобку
     if (s[0] == '(') {
         // то заходим в нее начиная с меньших по преоритету операций
@@ -155,7 +160,7 @@ Result MathParser::Bracket(std::string s) {
     return FunctionVariable(s);
 }
 
-Result MathParser::FunctionVariable(std::string s) {
+Result MathParser::FunctionVariable(std::string s) throw(std::string*) {
     std::string f = "";
     int i = 0;
     // ищем название функции или переменной
@@ -175,7 +180,7 @@ Result MathParser::FunctionVariable(std::string s) {
     return Num(s);
 }
 
-double MathParser::getVariable(std::string varName) {
+double MathParser::getVariable(std::string varName) throw(std::string*) {
     std::map<std::string, double>::iterator var = vars.find(varName);
     // проверяю существование переменной
     if (var == vars.end()) {
@@ -185,7 +190,7 @@ double MathParser::getVariable(std::string varName) {
     return var->second;
 }
 
-Result MathParser::Num(std::string s) {
+Result MathParser::Num(std::string s) throw(std::string*) {
     unsigned int i = 0;
     int dot_cnt = 0;
     bool negative = false;
@@ -198,12 +203,12 @@ Result MathParser::Num(std::string s) {
     while (i < s.length() && (isDigit(s[i]) || s[i] == '.')) {
         // но также проверям, что в числе может быть только одна точка!
         if (s[i] == '.' && ++dot_cnt > 1) {
-            throw "not valid number '" + s.substr(0, i + 1) + "'";
+            throw new std::string("not valid number '" + s.substr(0, i + 1) + "'");
         }
         i++;
     }
     if (i == 0) { // что-либо похожее на число мы не нашли
-        throw "can't get valid number in '" + s + "'";
+        throw new std::string("can't get valid number in '" + s + "'");
     }
 
     // конвертируем строку в число
@@ -220,21 +225,21 @@ Result MathParser::processFunction(std::string func, Result r) {
     // в r учтено, что название функции в нем не присудствует
 
     const double pi = 3.1415926535897932384626;
-    if (String::stringStartAt(func, "sin")) {
+    if (String::stringStartAt(&func, "sin")) {
         return Result(sin(r.acc * pi / 180), r.rest);
-    } else if (String::stringStartAt(func, "cos")) {
+    } else if (String::stringStartAt(&func, "cos")) {
         return Result(cos(r.acc * pi / 180), r.rest);
-    } else if (String::stringStartAt(func, "tg")) {
+    } else if (String::stringStartAt(&func, "tg")) {
         return Result(tan(r.acc * pi / 180), r.rest);
-    }else if (String::stringStartAt(func, "ctg")) {
+    }else if (String::stringStartAt(&func, "ctg")) {
         return Result(1.0 / processFunction("tg", r).acc, r.rest);
-    } else if (String::stringStartAt(func, "exp")) {
-        return exp(r.acc, r.rest);
+    } else if (String::stringStartAt(&func, "exp")) {
+        return Result(exp(r.acc), r.rest);
     }
     throw "Error: there is no such function " + func + ";";
 }
 
-Result MathParser::Degree(std::string s) {
+Result MathParser::Degree(std::string s) throw(std::string*) {
     // переход к более преоритетным операциям скобкам
     Result current = Bracket(s);
     // получение результата в скобках, если они были

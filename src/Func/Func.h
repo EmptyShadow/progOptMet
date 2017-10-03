@@ -6,36 +6,38 @@
 #define PROGOPTMET_FUNC_H
 
 #include "string"
-#include "../Parameters/Vars/Vector.h"
-#include "../Parser/MathParser.h"
 #include "set"
-#include "exception"
-#include "../String/String.h"
+
+class Vector;
 
 class Func {
 public:
     std::string func = ""; // функция
-    std::set<std::string> vars; // переменные
+    std::set<std::string> vars = {}; // переменные
 
-    Func(std::string func) throw(std::string);
+    Func(std::string *func) throw(std::string*);
+
+    ~Func();
 
     /**
      * Изменить функцию
      * @param func
      */
-    void setFunc(std::string func) throw(std::string);
+    void setFunc(std::string *func) throw(std::string*);
 
     /**
      * Вычислить функцию в случайной точке
      * @return
      */
-    double inRandomVector() throw(std::string);
+    double inRandomVector() throw(std::string*);
 
     /**
      * Функция запуска на исполнение
      * @return
      */
-    virtual double y(Vector &params) throw(std::string);
+    virtual double y(Vector *params) throw(std::string*);
+
+    Func *clone();
 
 };
 
