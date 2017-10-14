@@ -1,28 +1,145 @@
 ﻿using System;
-using MethodsOptimization.src.Parametrs.Flags;
-using MethodsOptimization.src.Parametrs.Input;
-using MethodsOptimization.src.Parametrs.Output;
 using MethodsOptimization.src.Parametrs.Vars;
 
 namespace MethodsOptimization.src.Parametrs
 {
-    class Params: ICloneable
+    /// <summary>
+    /// Класс хранит в себе входные и выходные данные метода,
+    /// так же класс может вычислять дополнительные данные
+    /// </summary>
+    class Params : ICloneable
     {
         public Params() { }
 
-        public InputParams input = new InputParams(); // входные параметры
-        public OutputParams output = new OutputParams(); // результат
-        public LimitingFlags flags = new LimitingFlags(); // флаги
+        public Params(InputParams In)
+        {
+            this.In = In;
+        }
 
-        string logs = "**************\n*****Logs*****\n**************\n"; // логи
+        public Params(InputParams In, OutputParams Out) : this(In)
+        {
+            this.Out = Out;
+        }
 
         /// <summary>
-        /// Запись построчно в логи
+        /// Входные параметры
         /// </summary>
-        /// <param name="log">Строка которую записывают</param>
-        public void writelnInLogs(string log)
+        public InputParams In { get; set; }
+        /// <summary>
+        /// Выходные параметры - результат
+        /// </summary>
+        public OutputParams Out { get; set; }
+
+        /// <summary>
+        /// Записать выходные параметры метода во входные, если позволяет флаг
+        /// </summary>
+        public void WriteOutputInInput()
         {
-            logs += log;
+            if (In == null || Out == null) return;
+            In.Alfa = Out.Alfa;
+            In.Alfa_h = Out.Alfa_h;
+        }
+        /// <summary>
+        /// Инициализация выходных данных на основе входных данных
+        /// </summary>
+        /// <returns></returns>
+        public void InitOut()
+        {
+            Out = new OutputParams();
+            Out.K = 0;
+            Out.Alfa_h = In.Alfa_h;
+            if (In.Alfa == null)
+            {
+                Out.Alfa = new Vector();
+            }
+            else
+            {
+                Out.Alfa = (Vector)In.Alfa.Clone();
+            }
+        }
+
+        /// <summary>
+        /// Получить шаг локализации минимума
+        /// </summary>
+        /// <returns></returns>
+        public double GetAlfa_ByOut()
+        {
+            if (Out == null || Out.Alfa.Size == 0) return double.NaN;
+            double summ = 0.0;
+            for (int i = 0; i < Out.Alfa.Size; i++)
+            {
+                summ += Out.Alfa[i];
+            }
+            return summ / Out.Alfa.Size;
+        }
+
+        /// <summary>
+        /// Получить шаг локализации минимума
+        /// </summary>
+        /// <returns></returns>
+        public double GetAlfa_ByIn()
+        {
+            if (In == null || In.Alfa.Size == 0) return double.NaN;
+            double summ = 0.0;
+            for (int i = 0; i < In.Alfa.Size; i++)
+            {
+                summ += In.Alfa[i];
+            }
+            return summ / In.Alfa.Size;
+        }
+
+        /// <summary>
+        /// Получить аргумент минимума по элементу интервала локализации
+        /// </summary>
+        /// <param name="i">номер элемента из интервала локализации</param>
+        /// <returns></returns>
+        public Vector GetX_atAlfaI(int i)
+        {
+            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size <= i) return null;
+            return In.X0 + Out.Alfa[i] * In.P;
+        }
+
+        /// <summary>
+        /// Получить аргумент минимума
+        /// </summary>
+        /// <returns></returns>
+        public Vector GetX_ByIn()
+        {
+            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size == 0) return null;
+            double a_ = GetAlfa_ByIn();
+            if (a_ == double.NaN) return null;
+            return In.X0 + a_ * In.P;
+        }
+        /// <summary>
+        /// Получить аргумент минимума
+        /// </summary>
+        /// <returns></returns>
+        public Vector GetX_ByOut()
+        {
+            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size == 0) return null;
+            double a_ = GetAlfa_ByOut();
+            if (a_ == double.NaN) return null;
+            return In.X0 + a_ * In.P;
+        }
+        /// <summary>
+        /// Получить минимум функции по 
+        /// </summary>
+        /// <returns></returns>
+        public double F_ByIn()
+        {
+            Vector x_ = GetX_ByIn();
+            if (x_ == null) return double.NaN;
+            return In.Y.Parse(x_);
+        }
+        /// <summary>
+        /// Получить минимум функции по 
+        /// </summary>
+        /// <returns></returns>
+        public double F_ByOut()
+        {
+            Vector x_ = GetX_ByOut();
+            if (x_ == null) return double.NaN;
+            return In.Y.Parse(x_);
         }
 
         /// <summary>
@@ -32,9 +149,8 @@ namespace MethodsOptimization.src.Parametrs
         new public string ToString()
         {
             string str = "Parametrs:\n";
-            str += input.ToString().Replace("\t", "\t\t");
-            str += output.ToString().Replace("\t", "\t\t");
-            str += flags.ToString().Replace("\t", "\t\t");
+            str += "\t" + In.ToString().Replace("\t", "\t\t");
+            str += "\t" + Out.ToString().Replace("\t", "\t\t");
             return str;
         }
         /// <summary>
@@ -44,18 +160,9 @@ namespace MethodsOptimization.src.Parametrs
         public object Clone()
         {
             Params clone = new Params();
-            clone.input = (InputParams)input.Clone();
-            clone.output = (OutputParams)output.Clone();
-            clone.flags = (LimitingFlags)flags.Clone();
+            clone.In = (InputParams)In.Clone();
+            clone.Out = (OutputParams)Out.Clone();
             return clone;
-        }
-
-        public string Logs
-        {
-            get
-            {
-                return (string)logs.Clone();
-            }
         }
     }
 }

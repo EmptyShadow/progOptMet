@@ -197,6 +197,11 @@ namespace MethodsOptimization.src.Parametrs.Vars
             return clone;
         }
 
+        public void Clear()
+        {
+            vars.Clear();
+        }
+
         /// <summary>
         /// К виду строки
         /// </summary>
@@ -292,6 +297,28 @@ namespace MethodsOptimization.src.Parametrs.Vars
         public bool checkIndex(int number)
         {
             return (number >= 0 && number < Size);
+        }
+
+        /// <summary>
+        /// первая переменная из вектора
+        /// </summary>
+        public double First
+        {
+            get
+            {
+                return this[0];
+            }
+        }
+
+        /// <summary>
+        /// последняя переменная из вектора
+        /// </summary>
+        public double Last
+        {
+            get
+            {
+                return this[Size - 1];
+            }
         }
     }
 }

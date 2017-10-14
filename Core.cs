@@ -23,16 +23,16 @@ namespace MethodsOptimization.src
         /// <summary>
         /// Методы многомерного поиска
         /// </summary>
-        public readonly Composer MDS;
+        public readonly Composite MDS;
 
         private Core()
         {
             // Инициализация скомпанованого списка методов
-            MDS = new Composer();
+            MDS = new Composite();
             MDS.Add(new Swenn());
             MDS.Add(new GoldenSection1());
             MDS.Add(new Powell());
-            MDS.Add(new Koshi());
+            //MDS.Add(new Koshi());
         }
 
         /// <summary>

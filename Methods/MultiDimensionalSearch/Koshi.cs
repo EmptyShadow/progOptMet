@@ -1,18 +1,19 @@
 ﻿using MethodsOptimization.src.Parametrs;
-using MethodsOptimization.src.Parametrs.Input;
-using MethodsOptimization.src.Parametrs.Output;
+using MethodsOptimization.src.Parametrs;
+using MethodsOptimization.src.Parametrs;
 using MethodsOptimization.src.Parametrs.Vars;
 using MethodsOptimization.src;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 {
+    /*
     class Koshi: MultiDimSearch
     {
         public Koshi()
         {
             name = "Koshi";
         }
-
+        
         /// <summary>
         /// Запуск на исполнение метода
         /// </summary>
@@ -57,5 +58,5 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 
             return parametrs.output.f_x_;
         }
-    }
+    }*/
 }

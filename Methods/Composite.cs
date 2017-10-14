@@ -8,21 +8,28 @@ namespace MethodsOptimization.src.Methods
     /// <summary>
     /// Компановщик методов
     /// </summary>
-    class Composer: Method
+    class Composite: EmptyMethod
     {
-        public Composer()
+        /// <summary>
+        /// скомпонованные методы
+        /// </summary>
+        private List<EmptyMethod> listMs = null;
+
+        public Composite()
         {
-            name = "Composer";
-            listMs = new List<Method>();
+            name = "Composer methods";
+            listMs = new List<EmptyMethod>();
         }
 
-        override public double Run(ref Params parametrs)
+        override public double Run(ref Params parametrs, EmptyMethod m = null)
         {
-            foreach(Method m in listMs)
+            foreach(EmptyMethod Ms in listMs)
             {
-                m.Run(ref parametrs);
+                m.Run(ref parametrs, m);
+                parametrs.WriteOutputInInput();
             }
-            return parametrs.output.f_x_;
+
+            return parametrs.GetAlfa_ByOut();
         }
 
         /// <summary>
@@ -30,13 +37,13 @@ namespace MethodsOptimization.src.Methods
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        override public Method GetMethodByName(string name)
+        override public EmptyMethod GetMethodByName(string name)
         {
             if (listMs != null)
             {
-                foreach (Method Ms in listMs)
+                foreach (EmptyMethod Ms in listMs)
                 {
-                    if (Ms.Name == name)
+                    if (Ms.GetName() == name)
                     {
                         return Ms;
                     }
@@ -49,14 +56,9 @@ namespace MethodsOptimization.src.Methods
         /// Добавление метода в компановщик
         /// </summary>
         /// <param name="m"></param>
-        override public void Add(Method m)
+        override public void Add(EmptyMethod m)
         {
             if (listMs != null) listMs.Add(m);
         }
-
-        /// <summary>
-        /// скомпонованные методы
-        /// </summary>
-        private List<Method> listMs = null;
     }
 }

@@ -4,6 +4,9 @@ using MethodsOptimization.src.Functions.Parsers;
 
 namespace MethodsOptimization.src.Functions
 {
+    /// <summary>
+    /// Математическая функция
+    /// </summary>
     class Function: MathParser
     {
         public Function(string s): base(s) {}

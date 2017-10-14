@@ -1,7 +1,6 @@
 ﻿using System;
 using MethodsOptimization.src.Parametrs;
 using MethodsOptimization.src.Parametrs.Vars;
-using MethodsOptimization.src.Parametrs.Output;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 {
@@ -14,48 +13,43 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         /// <summary>
         /// Запуск на исполнение метода
         /// </summary>
-        /// <param name="parametrs"></param>
+        /// <param name="p"></param>
         /// <returns></returns>
-        override public double Run(ref Params parametrs)
+        override public double Run(ref Params p, EmptyMethod method = null)
         {
-            WriteStart(ref parametrs);
-            // устанавливаем функцию
-            f = parametrs.input.y;
-            OutputParams q = Init(parametrs.input);
-            // начальный вектор, следующий вектор, направление
-            Vector p = parametrs.input.p, x0 = parametrs.input.x1;
+            p.InitOut();
+            if (p.In.Alfa.Size != 2) return double.NaN;
+            SearchEndingCriterion sec = new SearchEndingCriterion(p.In.Lim);
 
-            double lambda =  GoldenNumbers.LambdaGoldenSection(q.alfa[0], q.alfa[1]),
-            mu = GoldenNumbers.MuGoldenSection(q.alfa[0], q.alfa[1]);
-            do
+            // устанавливаем функцию
+            f = p.In.Y;
+
+            double lambda =  GoldenNumbers.LambdaGoldenSection(p.Out.Alfa[0], p.Out.Alfa[1]),
+            mu = GoldenNumbers.MuGoldenSection(p.Out.Alfa[0], p.Out.Alfa[1]);
+            while(!p.In.Lim.CheckNumIteration(p.Out.K))
             {
-                q.AB[0] = X(x0, q.alfa[0], p);
-                q.AB[1] = X(x0, q.alfa[1], p);
-                if (f.Parse(q.AB[0]) < f.Parse(q.AB[1]))
+                Vector x1 = X(p.In.X0, p.Out.Alfa[0], p.In.P);
+                Vector x2 = X(p.In.X0, p.Out.Alfa[1], p.In.P);
+                if (f.Parse(x1) < f.Parse(x2))
                 {
-                    q.alfa[1] = mu;
+                    p.Out.Alfa[1] = mu;
                     mu = lambda;
-                    lambda = GoldenNumbers.LambdaGoldenSection(q.alfa[0], q.alfa[1]);
+                    lambda = GoldenNumbers.LambdaGoldenSection(p.Out.Alfa[0], p.Out.Alfa[1]);
                 }
                 else
                 {
-                    q.alfa[0] = lambda;
+                    p.Out.Alfa[0] = lambda;
                     lambda = mu;
-                    mu = GoldenNumbers.MuGoldenSection(q.alfa[0], q.alfa[1]);
+                    mu = GoldenNumbers.MuGoldenSection(p.Out.Alfa[0], p.Out.Alfa[1]);
                 }
-                if (CheckArg(parametrs, q.alfa[0], q.alfa[1]) || CheckF(parametrs, q.AB[0], q.AB[1]))
+                if (sec.SEC(p.In, p.Out))
                 {
                     break;
                 }
-                q.k++;
-            } while (CheckK(parametrs, q.k));
+                p.Out.K++;
+            }
 
-            // записываем выходные параметры
-            WRez(ref parametrs, q);
-
-            WriteEnd(ref parametrs);
-
-            return parametrs.output.f_x_;
+            return p.GetAlfa_ByOut();
         }
     }
 }

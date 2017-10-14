@@ -1,7 +1,6 @@
-﻿using MethodsOptimization.src.Functions;
-using MethodsOptimization.src.Parametrs;
+﻿using MethodsOptimization.src.Parametrs;
 using MethodsOptimization.src.Parametrs.Vars;
-using MethodsOptimization.src.Parametrs.Output;
+using System;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 {
@@ -16,62 +15,61 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         /// </summary>
         /// <param name="parametrs"></param>
         /// <returns></returns>
-        override public double Run(ref Params parametrs)
+        override public double Run(ref Params p, EmptyMethod method = null)
         {
-            WriteStart(ref parametrs);
+            p.InitOut();
+            SearchEndingCriterion sec = new SearchEndingCriterion(p.In.Lim);
             // устанавливаем функцию
-            f = parametrs.input.y;
-            OutputParams q = Init(parametrs.input);
-            // начальный вектор, следующий вектор, направление
-            Vector p = parametrs.input.p, x0 = parametrs.input.x1;
+            f = p.In.Y;
+
             // производные по направлению
             double fd_k, fd_kp;
+            Vector x1 = p.In.X0, x2;
 
             // вычисляем производную в начальной точке
-            fd_k = GdF(q.AB[0], p);
+            fd_k = GdF(p.In.X0, p.In.P);
+
+            // Устанавливаем две точки интервала в ноль
+            p.Out.Alfa.Clear();
+            p.Out.Alfa.Push(1.0);
+            p.Out.Alfa.Push(0.0);
 
             // меняем направление если функция возрастает
             if (fd_k > 0)
             {
-                q.alfa_h = -q.alfa_h;
+                p.Out.Alfa_h = -p.Out.Alfa_h;
             }
             
             // Постепенно приближаемся к минимуму с заданной точностью
-            while (CheckK(parametrs, q.k))
+            while (!p.In.Lim.CheckNumIteration(p.Out.K))
             {
                 // вычисляем новые данные
-                q.alfa[1] = q.alfa[0] + q.alfa_h;
-                q.AB[1] = X(x0, q.alfa[1], p);
+                p.Out.Alfa[1] = p.Out.Alfa[0] + p.Out.Alfa_h;
+                x2 = X(p.In.X0, p.Out.Alfa[1], p.In.P);
 
                 // находим производные в текущей и следующей точке
-                fd_k = GdF(q.AB[0], p);
-                fd_kp = GdF(q.AB[1], p);
+                fd_k = GdF(x1, p.In.P);
+                fd_kp = GdF(x2, p.In.P);
                 // проверяем критерий окончания поиска
-                if (fd_kp * fd_k < 0.0 || CheckArg(parametrs, q.alfa[0], q.alfa[1]) || CheckF(parametrs, q.AB[0], q.AB[1]))
+                if (fd_kp * fd_k < 0.0)
                 {
                     // если точность достигнута
-                    if (q.alfa[0] >= q.alfa[1])
+                    if (p.Out.Alfa[0] >= p.Out.Alfa[1])
                     {
-                        double t = q.alfa[0];
-                        q.alfa[0] = q.alfa[1];
-                        q.alfa[1] = t;
-                        
+                        double t = p.Out.Alfa[0];
+                        p.Out.Alfa[0] = p.Out.Alfa[1];
+                        p.Out.Alfa[1] = t;
                     }
                     break;
                 }
                 // иначе ведем поиск дальше
-                q.alfa_h *= 2;
-                q.alfa[0] = q.alfa[1];
-                q.AB[0] = q.AB[1];
-                q.k++;
+                p.Out.Alfa_h *= 2;
+                p.Out.Alfa[0] = p.Out.Alfa[1];
+                x1 = x2;
+                p.Out.K++;
             }
 
-            // записываем выходные параметры
-            WRez(ref parametrs, q);
-
-            WriteEnd(ref parametrs);
-
-            return parametrs.output.f_x_;
+            return p.GetAlfa_ByOut();
         }
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MethodsOptimization.src.Functions.Parsers
 {
+    /// <summary>
+    /// Класс резльтата вычислений парсера
+    /// </summary>
     class Result
     {
         public readonly double acc; // значение функции на текущем этапе

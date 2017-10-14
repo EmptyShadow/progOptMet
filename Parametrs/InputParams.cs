@@ -2,44 +2,43 @@
 using MethodsOptimization.src.Parametrs.Vars;
 using MethodsOptimization.src.Functions;
 
-namespace MethodsOptimization.src.Parametrs.Input
+namespace MethodsOptimization.src.Parametrs
 {
+    /// <summary>
+    /// Входные данные
+    /// </summary>
     class InputParams: ICloneable
     {
         public InputParams() {}
-
-        /// <summary>
-        /// ограничение по количеству итераций
-        /// </summary>
-        public int m = 40;
+        
         /// <summary>
         /// стартовая точка
         /// </summary>
-        public Vector x1 = new Vector();
+        public Vector X0 { get; set; }
         /// <summary>
         /// начальное направление
         /// </summary>
-        public Vector p = new Vector();
+        public Vector P { get; set; }
         /// <summary>
-        /// интервал минимизации шага локализации
+        /// начальный интервал локализации минимума
         /// </summary>
-        public Vector alfa = new Vector();
+        public Vector Alfa { get; set; }
         /// <summary>
-        /// шаг изменения шага приближения к локальному минимуму
+        /// шаг изменения интервала локализации
         /// </summary>
-        public double alfa_h = 0.01;
+        public double Alfa_h { get; set; } = 1e-2;
+        /// <summary>
+        /// Коэффициент ускорения
+        /// </summary>
+        public double B { get; set; } = 10;
         /// <summary>
         /// Иследуемая функция
         /// </summary>
-        public Function y = null;
+        public Function Y { get; set; }
         /// <summary>
-        /// погрешность по аргументам
+        /// Ограничения
         /// </summary>
-        public double eps_arg = 1e-3;
-        /// <summary>
-        /// погрешнасть по значениям функции
-        /// </summary>
-        public double eps_f = 1e-3;
+        public LimitingParams Lim { get; set; }
 
         /// <summary>
         /// Привести к строке
@@ -48,16 +47,13 @@ namespace MethodsOptimization.src.Parametrs.Input
         new public string ToString()
         {
             string str = "Input:\n";
-            str += "\tm: " + m + ";\n";
-            str += "\tx1: " + x1.ToString().Replace("\t", "\t\t");
-            str += "\tp: " + p.ToString().Replace("\t", "\t\t");
-            str += "\talfa_: " + Alfa_ + "\n";
-            str += "\talfa: " + alfa.ToString().Replace("\t", "\t\t");
-            str += "\talfa_h: " + alfa_h + ";\n";
-            str += "\teps_arg: " + eps_arg + ";\n";
-            str += "\teps_f: " + eps_f + ";\n";
-            str += "\tFunction: " + y.ToString().Replace("\t", "\t\t") + "\n";
-
+            str += "\tX0: " + X0.ToString().Replace("\t", "\t\t");
+            str += "\tP: " + P.ToString().Replace("\t", "\t\t");
+            str += "\tAlfa:\n\t" + Alfa.ToString().Replace("\t", "\t\t");
+            str += "\tAlfa_h: " + Alfa_h + ";\n";
+            str += "\tB: " + B + ";\n";
+            str += "\tFunction: " + Y.ToString() + "\n";
+            str += "\tLimiting params: " + Lim.ToString().Replace("\t", "\t\t");
             return str;
         }
 
@@ -68,29 +64,14 @@ namespace MethodsOptimization.src.Parametrs.Input
         public object Clone()
         {
             InputParams clone = new InputParams();
-            clone.alfa = (Vector)alfa.Clone();
-            clone.alfa_h = alfa_h;
-            clone.eps_arg = eps_arg;
-            clone.eps_f = eps_f;
-            clone.m = m;
-            clone.p = (Vector)p.Clone();
-            clone.x1 = (Vector)x1.Clone();
-            clone.y = y;
+            clone.X0 = (Vector)X0.Clone();
+            clone.P = (Vector)P.Clone();
+            clone.Alfa = (Vector)Alfa.Clone();
+            clone.Alfa_h = Alfa_h;
+            clone.B = B;
+            clone.Y = Y;
+            clone.Lim = (LimitingParams)Lim.Clone();
             return clone;
-        }
-
-        public double Alfa_
-        {
-            get
-            {
-                if (alfa.Size == 0) return double.NaN;
-                double summ = 0.0;
-                for(int i = 0; i < alfa.Size; i++)
-                {
-                    summ += alfa[i];
-                }
-                return summ / alfa.Size;
-            }
         }
     }
 }

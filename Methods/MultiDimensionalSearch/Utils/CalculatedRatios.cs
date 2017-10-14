@@ -1,16 +1,15 @@
 ﻿using MethodsOptimization.src.Parametrs.Vars;
-using MethodsOptimization.src.Parametrs.Output;
 using MethodsOptimization.src.Functions;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 {
     class CalculatedRatios
     {
-        public static double First(Function f, Vector x0, Vector p, OutputParams param)
+        public static double First(Function f, Vector x0, Vector p, Vector alfa)
         {
-            if (param.alfa != null && param.alfa.Size == 3)
+            if (alfa != null && alfa.Size == 3)
             {
-                double a = param.alfa[0], b = param.alfa[1], c = param.alfa[2],
+                double a = alfa[0], b = alfa[1], c = alfa[2],
                     aa = a * a, bb = b * b, cc = c * c;
                 double Fa = f.Parse(x0 + p * a),
                     Fb = f.Parse(x0 + p * b),
@@ -22,11 +21,11 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             return double.NaN;
         }
 
-        public static double Second(Function f, Vector x0, Vector p, OutputParams param)
+        public static double Second(Function f, Vector x0, Vector p, Vector alfa)
         {
-            if (param.alfa != null && param.alfa.Size == 3)
+            if (alfa != null && alfa.Size == 3)
             {
-                double a = param.alfa[0], b = param.alfa[1], c = param.alfa[2],
+                double a = alfa[0], b = alfa[1], c = alfa[2],
                     aa = a * a, bb = b * b, cc = c * c;
                 double Fa = f.Parse(x0 + p * a),
                     Fb = f.Parse(x0 + p * b),
@@ -38,11 +37,11 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             return double.NaN;
         }
 
-        public static double Third(Function f, Vector x0, Vector p, OutputParams param)
+        public static double Third(Function f, Vector x0, Vector p, Vector alfa)
         {
-            if (param.alfa != null && param.alfa.Size == 3)
+            if (alfa != null && alfa.Size == 3)
             {
-                double a = param.alfa[0], b = param.alfa[1], c = param.alfa[2],
+                double a = alfa[0], b = alfa[1], c = alfa[2],
                     aa = a * a, bb = b * b, cc = c * c;
                 double Fa = f.Parse(x0 + p * a),
                     Fb = f.Parse(x0 + p * b),
@@ -54,11 +53,11 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             return double.NaN;
         }
 
-        public static double Fourth(Function f, Vector x0, Vector p, OutputParams param)
+        public static double Fourth(Function f, Vector x0, Vector p, Vector alfa)
         {
-            if (param.alfa != null && param.alfa.Size == 3)
+            if (alfa != null && alfa.Size == 3)
             {
-                double a = param.alfa[0], b = param.alfa[1], c = param.alfa[2],
+                double a = alfa[0], b = alfa[1], c = alfa[2],
                     aa = a * a, bb = b * b, cc = c * c;
                 double Fa = f.Parse(x0 + p * a),
                     Fb = f.Parse(x0 + p * b),
@@ -69,19 +68,19 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             return double.NaN;
         }
 
-        public static double Fifth(Function f, Vector x0, Vector p, OutputParams param)
+        public static double Fifth(Function f, Vector x0, Vector p, Vector alfa)
         {
-            if (param.alfa != null && param.alfa.Size == 3)
+            if (alfa != null && alfa.Size == 3)
             {
-                double a = param.alfa[0], b = param.alfa[1], c = param.alfa[2],
+                double a = alfa[0], b = alfa[1], c = alfa[2],
                     aa = a * a, bb = b * b, cc = c * c;
                 Vector xa = x0 + p * a, xb = x0 + p * b, xc = x0 + p * c;
                 double Fa = f.Parse(xa),
                     Fb = f.Parse(xb + p * b),
                     Fc = f.Parse(xc),
-                    dFa = Math.DirectionalDerivative(f, xa, p),
-                    dFb = Math.DirectionalDerivative(f, xb, p),
-                    dFc = Math.DirectionalDerivative(f, xc, p);
+                    dFa = Math.GF(f, xa, p),
+                    dFb = Math.GF(f, xb, p),
+                    dFc = Math.GF(f, xc, p);
 
                 double z = dFa + dFb + 3 * (Fa - Fb) / (b - a), 
                     w = System.Math.Sqrt(z * z - dFa * dFb),

@@ -1,8 +1,5 @@
-﻿
-using MethodsOptimization.src.Functions;
-using MethodsOptimization.src.Parametrs;
+﻿using MethodsOptimization.src.Parametrs;
 using MethodsOptimization.src.Parametrs.Vars;
-using MethodsOptimization.src.Parametrs.Output;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 {
@@ -15,72 +12,64 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         /// <summary>
         /// Запуск на исполнение метода
         /// </summary>
-        /// <param name="parametrs"></param>
+        /// <param name="p"></param>
         /// <returns></returns>
-        override public double Run(ref Params parametrs)
+        override public double Run(ref Params p, EmptyMethod method = null)
         {
-            WriteStart(ref parametrs);
+            p.InitOut();
+            if (p.Out.Alfa.Size != 2) return double.NaN;
             // устанавливаем функцию
-            f = parametrs.input.y;
-            OutputParams q = Init(parametrs.input);
-            // начальный вектор, следующий вектор, направление
-            Vector p = parametrs.input.p, x0 = parametrs.input.x1;
+            f = p.In.Y;
+            SearchEndingCriterion sec = new SearchEndingCriterion(p.In.Lim);
+            
+            double t = p.Out.Alfa[1];
+            p.Out.Alfa[1] = (p.Out.Alfa[0] + p.Out.Alfa[1]) / 2.0;
+            p.Out.Alfa.Push(t);
 
-            q.alfa.Push((q.alfa[0] + q.alfa[1]) / 2.0);
-            double t = q.alfa[1];
-            q.alfa[1] = q.alfa[2];
-            q.alfa[2] = t;
-
-            double d = CalculatedRatios.First(f, x0, p, q), fb = F(x0, q.alfa[1], p), fd = F(x0, d, p);
-            while (q.alfa[1] != 0.0 && CheckK(parametrs, q.k))
+            double d = CalculatedRatios.First(f, p.In.X0, p.In.P, p.Out.Alfa), 
+                fb = F(p.In.X0, p.Out.Alfa[1], p.In.P), 
+                fd = F(p.In.X0, d, p.In.P);
+            while (p.Out.Alfa[1] != 0.0 && !p.In.Lim.CheckNumIteration(p.Out.K))
             {
-                if (q.alfa[1] < d && fb < fd)
+                if (p.Out.Alfa[1] < d && fb < fd)
                 {
-                    q.alfa[2] = d;
+                    p.Out.Alfa[2] = d;
                 }
-                else if (q.alfa[1] < d && fb > fd)
+                else if (p.Out.Alfa[1] < d && fb > fd)
                 {
-                    q.alfa[0] = q.alfa[1];
-                    q.alfa[1] = d;
+                    p.Out.Alfa[0] = p.Out.Alfa[1];
+                    p.Out.Alfa[1] = d;
                 }
-                else if (q.alfa[1] > d && fb < fd)
+                else if (p.Out.Alfa[1] > d && fb < fd)
                 {
-                    q.alfa[0] = d;
+                    p.Out.Alfa[0] = d;
                 }
-                else if (q.alfa[1] > d && fb > fd)
+                else if (p.Out.Alfa[1] > d && fb > fd)
                 {
-                    q.alfa[2] = q.alfa[1];
-                    q.alfa[1] = d;
+                    p.Out.Alfa[2] = p.Out.Alfa[1];
+                    p.Out.Alfa[1] = d;
                 }
-                d = CalculatedRatios.Second(f, x0, p, q);
-                fb = F(x0, q.alfa[1], p);
-                fd = F(x0, d, p);
-                if (CheckArg(parametrs, fb, fd) ||
-                CheckF(parametrs, X(x0, q.alfa[1], p), X(x0, q.alfa[2], p)))
+                d = CalculatedRatios.Second(f, p.In.X0, p.In.P, p.Out.Alfa);
+                fb = F(p.In.X0, p.Out.Alfa[1], p.In.P); 
+                fd = F(p.In.X0, d, p.In.P);
+                if (sec.SEC(p.In, p.Out))
                 {
                     break;
                 }
-                q.k++;
+                p.Out.K++;
             }
-            if (q.alfa[1] < d)
+            if (p.Out.Alfa[1] < d)
             {
-                q.alfa[0] = q.alfa[1];
-                q.alfa[1] = d;
+                p.Out.Alfa[0] = p.Out.Alfa[1];
+                p.Out.Alfa[1] = d;
             }
             else
             {
-                q.alfa[0] = d;
+                p.Out.Alfa[0] = d;
             }
-            q.alfa.Remove(2);
-
-            q.AB[0] = X(x0, q.alfa[0], p);
-            q.AB[1] = X(x0, q.alfa[1], p);
-            // записываем выходные параметры
-            WRez(ref parametrs, q);
-
-            WriteEnd(ref parametrs);
-
-            return parametrs.output.f_x_;
+            p.Out.Alfa.Remove(2);
+            
+            return p.GetAlfa_ByOut();
         }
     }
 }
