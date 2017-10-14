@@ -19,7 +19,7 @@ namespace MethodsOptimization.src.Functions
                 str += " " + key + ",";
             }
             str = str.Substring(0, str.Length - 1);
-            str += ";";
+            str += ";\n";
             return str;
         }
     }

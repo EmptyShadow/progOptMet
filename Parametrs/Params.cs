@@ -149,8 +149,8 @@ namespace MethodsOptimization.src.Parametrs
         new public string ToString()
         {
             string str = "Parametrs:\n";
-            str += "\t" + In.ToString().Replace("\t", "\t\t");
-            str += "\t" + Out.ToString().Replace("\t", "\t\t");
+            if (In != null) str += "\t" + In.ToString().Replace("\t", "\t\t");
+            if (Out != null) str += "\t" + Out.ToString().Replace("\t", "\t\t");
             return str;
         }
         /// <summary>

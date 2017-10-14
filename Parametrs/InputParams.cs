@@ -47,13 +47,13 @@ namespace MethodsOptimization.src.Parametrs
         new public string ToString()
         {
             string str = "Input:\n";
-            str += "\tX0: " + X0.ToString().Replace("\t", "\t\t");
-            str += "\tP: " + P.ToString().Replace("\t", "\t\t");
-            str += "\tAlfa:\n\t" + Alfa.ToString().Replace("\t", "\t\t");
+            if (X0 != null) str += "\tX0: " + X0.ToString().Replace("\t", "\t\t");
+            if (P != null) str += "\tP: " + P.ToString().Replace("\t", "\t\t");
+            if (Alfa != null) str += "\tAlfa: " + Alfa.ToString().Replace("\t", "\t\t");
             str += "\tAlfa_h: " + Alfa_h + ";\n";
             str += "\tB: " + B + ";\n";
-            str += "\tFunction: " + Y.ToString() + "\n";
-            str += "\tLimiting params: " + Lim.ToString().Replace("\t", "\t\t");
+            if (Y != null) str += "\tFunction: " + Y.ToString().Replace("\t", "\t\t");
+            if (Lim != null) str += "\tLimiting params: " + Lim.ToString().Replace("\t", "\t\t");
             return str;
         }
 

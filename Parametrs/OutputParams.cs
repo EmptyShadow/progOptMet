@@ -31,7 +31,7 @@ namespace MethodsOptimization.src.Parametrs
         {
             string str = "Output:\n";
             str += "\tK: " + K + ";\n";
-            str += "\tAlfa:\n\t" + Alfa.ToString().Replace("\t", "\t\t");
+            if (Alfa != null) str += "\tAlfa: " + Alfa.ToString().Replace("\t", "\t\t");
             str += "\tAlfa_h: " + Alfa_h + "\n";
             return str;
         }
