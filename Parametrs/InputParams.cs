@@ -64,13 +64,13 @@ namespace MethodsOptimization.src.Parametrs
         public object Clone()
         {
             InputParams clone = new InputParams();
-            clone.X0 = (Vector)X0.Clone();
-            clone.P = (Vector)P.Clone();
-            clone.Alfa = (Vector)Alfa.Clone();
+            if (X0 != null) clone.X0 = (Vector)X0.Clone();
+            if (P != null) clone.P = (Vector)P.Clone();
+            if (Alfa != null) clone.Alfa = (Vector)Alfa.Clone();
             clone.Alfa_h = Alfa_h;
             clone.B = B;
             clone.Y = Y;
-            clone.Lim = (LimitingParams)Lim.Clone();
+            if (Lim != null) clone.Lim = (LimitingParams)Lim.Clone();
             return clone;
         }
     }

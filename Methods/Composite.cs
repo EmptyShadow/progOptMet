@@ -25,7 +25,7 @@ namespace MethodsOptimization.src.Methods
         {
             foreach(EmptyMethod Ms in listMs)
             {
-                m.Run(ref parametrs, m);
+                Ms.Run(ref parametrs, m);
                 parametrs.WriteOutputInInput();
             }
 
@@ -59,6 +59,21 @@ namespace MethodsOptimization.src.Methods
         override public void Add(EmptyMethod m)
         {
             if (listMs != null) listMs.Add(m);
+        }
+
+        protected override bool SEC(InputParams In, OutputParams Out)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override double F(Vector x, double Alfa = 0, Vector p = null)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override Vector X(Vector x, double Alfa = 0, Vector p = null)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

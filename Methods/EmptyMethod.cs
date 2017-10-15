@@ -27,14 +27,14 @@ namespace MethodsOptimization.src.Methods
         /// <param name="parametrs"></param>
         /// <param name="m"></param>
         /// <returns></returns>
-        virtual public double Run(ref Params parametrs, EmptyMethod m = null) { return double.NaN; }
-        
+        abstract public double Run(ref Params parametrs, EmptyMethod m = null);
+
         /// <summary>
         /// Метод вычисления функции
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        virtual protected double F(Vector x, double Alfa = 0.0, Vector p = null) { return double.NaN; }
+        abstract protected double F(Vector x, double Alfa = 0.0, Vector p = null);
 
         /// <summary>
         /// Получение следующего вектора
@@ -43,7 +43,7 @@ namespace MethodsOptimization.src.Methods
         /// <param name="Alfa"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        virtual protected Vector X(Vector x, double Alfa = 0.0, Vector p = null) { return x; }
+        abstract protected Vector X(Vector x, double Alfa = 0.0, Vector p = null);
 
         virtual public string GetName()
         {
@@ -55,13 +55,13 @@ namespace MethodsOptimization.src.Methods
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        virtual public EmptyMethod GetMethodByName(string name) { return null; }
+        abstract public EmptyMethod GetMethodByName(string name);
 
         /// <summary>
         /// Добавление метода в компановщик
         /// </summary>
         /// <param name="m"></param>
-        virtual public void Add(EmptyMethod m) { }
+        abstract public void Add(EmptyMethod m);
 
         new virtual public string ToString()
         {
@@ -89,5 +89,13 @@ namespace MethodsOptimization.src.Methods
         {
             return Math.GF(f, x);
         }
+
+        /// <summary>
+        /// Критерий окончания поиска для метода
+        /// </summary>
+        /// <param name="In"></param>
+        /// <param name="Out"></param>
+        /// <returns></returns>
+        abstract protected bool SEC(InputParams In, OutputParams Out);
     }
 }

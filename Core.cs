@@ -32,7 +32,7 @@ namespace MethodsOptimization.src
             MDS.Add(new Swenn());
             MDS.Add(new GoldenSection1());
             MDS.Add(new Powell());
-            //MDS.Add(new Koshi());
+            MDS.Add(new Koshi());
         }
 
         /// <summary>

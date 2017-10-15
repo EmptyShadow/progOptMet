@@ -10,6 +10,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         {
             name = "Swenn";
         }
+        
         /// <summary>
         /// Запуск на исполнение метода
         /// </summary>
@@ -18,7 +19,6 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         override public double Run(ref Params p, EmptyMethod method = null)
         {
             p.InitOut();
-            SearchEndingCriterion sec = new SearchEndingCriterion(p.In.Lim);
             // устанавливаем функцию
             f = p.In.Y;
 
@@ -31,7 +31,8 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 
             // Устанавливаем две точки интервала в ноль
             p.Out.Alfa.Clear();
-            p.Out.Alfa.Push(1.0);
+            double q = 2 * p.In.Y.Parse(x1) / GdF(x1, p.In.P);
+            p.Out.Alfa.Push((System.Math.Abs(q) < 1.0) ? q : 1.0);
             p.Out.Alfa.Push(0.0);
 
             // меняем направление если функция возрастает

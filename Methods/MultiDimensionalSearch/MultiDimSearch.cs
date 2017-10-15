@@ -10,7 +10,22 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         {
             name = "MultiDimensionalSearch";
         }
-        
+
+        public override void Add(EmptyMethod m)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override EmptyMethod GetMethodByName(string name)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override double Run(ref Params parametrs, EmptyMethod m = null)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// Метод вычисления функции
         /// </summary>
@@ -22,7 +37,12 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             {
                 return f.Parse(X(x, Alfa, p));
             }
-            return double.NaN;
+            throw new System.Exception("Ошибка получения значения функции: переданны не установленные данные");
+        }
+
+        protected override bool SEC(InputParams In, OutputParams Out)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <summary>

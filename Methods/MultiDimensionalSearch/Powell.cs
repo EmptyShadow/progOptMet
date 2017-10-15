@@ -9,6 +9,19 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         {
             name = "Powell";
         }
+
+        protected override bool SEC(InputParams In, OutputParams Out)
+        {
+            SearchEndingCriterion sec = new SearchEndingCriterion(In.Lim);
+            Vector x1 = X(In.X0, Out.Alfa[0], In.P);
+            Vector x2 = X(In.X0, Out.Alfa[1], In.P);
+            Vector x3 = X(In.X0, Out.Alfa[2], In.P);
+            if ((x1 - x2).Norma > (x3 - x2).Norma)
+            {
+                return sec.CheckArg(x3, x2) && sec.CheckF(In.Y, x3, x2);
+            }
+            return sec.CheckArg(x1, x2) && sec.CheckF(In.Y, x1, x2);
+        }
         /// <summary>
         /// Запуск на исполнение метода
         /// </summary>
@@ -17,10 +30,9 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         override public double Run(ref Params p, EmptyMethod method = null)
         {
             p.InitOut();
-            if (p.Out.Alfa.Size != 2) return double.NaN;
+            if (p.Out.Alfa.Size != 2) throw new System.Exception("Error run method Powell: size alfa != 2");
             // устанавливаем функцию
             f = p.In.Y;
-            SearchEndingCriterion sec = new SearchEndingCriterion(p.In.Lim);
             
             double t = p.Out.Alfa[1];
             p.Out.Alfa[1] = (p.Out.Alfa[0] + p.Out.Alfa[1]) / 2.0;
@@ -29,7 +41,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             double d = CalculatedRatios.First(f, p.In.X0, p.In.P, p.Out.Alfa), 
                 fb = F(p.In.X0, p.Out.Alfa[1], p.In.P), 
                 fd = F(p.In.X0, d, p.In.P);
-            while (p.Out.Alfa[1] != 0.0 && !p.In.Lim.CheckNumIteration(p.Out.K))
+            while (System.Math.Abs(fb - fd) > p.In.Lim.Eps && !p.In.Lim.CheckNumIteration(p.Out.K))
             {
                 if (p.Out.Alfa[1] < d && fb < fd)
                 {
@@ -52,7 +64,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 d = CalculatedRatios.Second(f, p.In.X0, p.In.P, p.Out.Alfa);
                 fb = F(p.In.X0, p.Out.Alfa[1], p.In.P); 
                 fd = F(p.In.X0, d, p.In.P);
-                if (sec.SEC(p.In, p.Out))
+                if (SEC(p.In, p.Out))
                 {
                     break;
                 }

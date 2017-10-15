@@ -1,62 +1,64 @@
 ﻿using MethodsOptimization.src.Parametrs;
-using MethodsOptimization.src.Parametrs;
-using MethodsOptimization.src.Parametrs;
 using MethodsOptimization.src.Parametrs.Vars;
 using MethodsOptimization.src;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 {
-    /*
+    
     class Koshi: MultiDimSearch
     {
         public Koshi()
         {
             name = "Koshi";
         }
-        
+
+        protected override bool SEC(InputParams In, OutputParams Out)
+        {
+            SearchEndingCriterion sec = new SearchEndingCriterion(In.Lim);
+            Vector x1 = X(In.X0, Out.Alfa[0], In.P);
+            Vector x2 = X(In.X0, Out.Alfa[1], In.P);
+            return sec.CheckArg(x1, x2) && sec.CheckF(In.Y, x1, x2) && sec.CheckGF(In.Y, x2, In.P);
+        }
+
         /// <summary>
         /// Запуск на исполнение метода
         /// </summary>
-        /// <param name="parametrs"></param>
+        /// <param name="p"></param>
         /// <returns></returns>
-        override public double Run(ref Params parametrs)
+        override public double Run(ref Params p, EmptyMethod methods)
         {
-            WriteStart(ref parametrs);
+            if (methods == null) throw new System.Exception("Ошибка метода " + name + ": не определены методы, которые будет использованны");
+            p.InitOut();
             // устанавливаем функцию
-            f = parametrs.input.y;
-            OutputParams q = Init(parametrs.input);
-            // начальный вектор, следующий вектор, направление
-            Vector p, xk;
+            f = p.In.Y;
+            
+            Vector xk = p.In.X0, xk_p;
 
-            Core core = Core.Instance;
-            Params parSerch = (Params)parametrs.Clone();
-            parSerch.flags.HainComputing = true;
-            parSerch.flags.EpsArg = true;
-            parSerch.flags.EpsF = true;
-            parSerch.input.m = 30;
+            // параметры для поиска минимума на k-ом шаге
+            Params pSerch = (Params)p.Clone();
 
-            q.x_ = parametrs.input.x1;
-            while(CheckK(parametrs, q.k))
+            while(!p.In.Lim.CheckNumIteration(p.Out.K))
             {
-                p = -GdF(q.x_);
-                parSerch.input.x1 = q.x_;
-                parSerch.input.p = p;
-                core.MDS.GetMethodByName("Swenn").Run(ref parSerch);
-                core.MDS.GetMethodByName("Golden section 1").Run(ref parSerch);
-                xk = q.x_ + parSerch.output.Alfa_ * p;
-                if (CheckF(parametrs, q.x_, xk) || CheckArg(parametrs, q.x_, xk))
+                // получаю направление
+                pSerch.In.P = -GdF(xk);
+                pSerch.In.X0 = xk;
+                // получаю шаг до минимума
+                p.Out.Alfa.Push(methods.Run(ref pSerch));
+                // получаю следующий вектор
+                xk_p = xk + p.Out.Alfa.Last * pSerch.In.P;
+                System.Console.WriteLine(xk_p.ToString());
+                // проверяю коп
+                if ((xk_p - xk).Norma <= p.In.Lim.Eps &&
+                    pSerch.In.P.Norma <= p.In.Lim.Eps &&
+                    System.Math.Abs(f.Parse(xk_p) - f.Parse(xk)) <= p.In.Lim.Eps)
                 {
                     break;
                 }
-                q.x_ = xk;
+                xk= xk_p;
+                p.Out.K++;
             }
 
-            // записываем выходные параметры
-            WRez(ref parametrs, q);
-
-            WriteEnd(ref parametrs);
-
-            return parametrs.output.f_x_;
+            return p.GetAlfa_ByOut();
         }
-    }*/
+    }
 }

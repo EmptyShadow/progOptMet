@@ -1,5 +1,4 @@
-﻿using MethodsOptimization.src.Parametrs.Flags;
-using System;
+﻿using System;
 
 namespace MethodsOptimization.src.Parametrs
 {
@@ -20,11 +19,6 @@ namespace MethodsOptimization.src.Parametrs
         public double Eps { get; set; }  = 1e-3;
 
         /// <summary>
-        /// Флаги, обозначающие учитывания тех или иных ограничений
-        /// </summary>
-        public LimitingFlags Flags { get; set; }
-
-        /// <summary>
         /// Проверка ограничения по количетву итераций,
         /// Если флаги ограничений не установленны, то false
         /// Если флаг ограничения по количеству итераций не установлен, то false
@@ -34,8 +28,6 @@ namespace MethodsOptimization.src.Parametrs
         /// <returns></returns>
         public bool CheckNumIteration(int numIteration)
         {
-            if (Flags == null) return false;
-            if (Flags.K == false) return false;
             return numIteration >= K;
         }
 
@@ -48,19 +40,16 @@ namespace MethodsOptimization.src.Parametrs
         /// <param name="flag"></param>
         /// <param name="norma"></param>
         /// <returns></returns>
-        public bool CheckEPS(bool flag, double eps)
+        public bool CheckEPS(double value)
         {
-            if (Flags == null) return false;
-            if (flag == false) return false;
-            return System.Math.Abs(eps) <= Eps;
+            return System.Math.Abs(value) <= Eps;
         }
 
         public override string ToString()
         {
             String str = "Limiting params:\n" +
                 "\tK: " + K + "\n" +
-                "\tEps: " + Eps.ToString("G8") + "\n" +
-                "\tFlags\n\t" + Flags.ToString().Replace("\t", "\t\t");
+                "\tEps: " + Eps.ToString("G8") + "\n";
             return str;
         }
 
@@ -69,7 +58,6 @@ namespace MethodsOptimization.src.Parametrs
             LimitingParams clone = new LimitingParams();
             clone.K = K;
             clone.Eps = Eps;
-            clone.Flags = (LimitingFlags)Flags.Clone();
             return clone;
         }
     }

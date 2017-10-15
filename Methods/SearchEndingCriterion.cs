@@ -22,7 +22,7 @@ namespace MethodsOptimization.src.Methods
         /// <param name="In">Входные данные</param>
         /// <param name="Out">Результаты вычисления</param>
         /// <returns>Если все критерии вернут true, то критерий выполнен true, иначе false</returns>
-        public bool SEC(InputParams In, OutputParams Out)
+        public bool FullSEC(InputParams In, OutputParams Out)
         {
             Vector x1 = In.X0 + Out.Alfa.First * In.P,
                 x2 = In.X0 + Out.Alfa.Last * In.P;
@@ -40,9 +40,8 @@ namespace MethodsOptimization.src.Methods
         /// <param name="m"></param>
         /// <param name="k"></param>
         /// <returns></returns>
-        protected bool CheckK(int k)
+        public bool CheckK(int k)
         {
-            if (!Lim.Flags.K) return true;
             return Lim.CheckNumIteration(k);
         }
 
@@ -52,10 +51,9 @@ namespace MethodsOptimization.src.Methods
         /// <param name="p"></param>
         /// <param name="norma"></param>
         /// <returns></returns>
-        protected bool CheckArg(Vector a, Vector b)
+        public bool CheckArg(Vector a, Vector b)
         {
-            if (!Lim.Flags.NormaArg) return true;
-            return Lim.CheckEPS(Lim.Flags.NormaArg, (a - b).Norma);
+            return Lim.CheckEPS((a - b).Norma);
         }
         /// <summary>
         /// Проверка критерия по длине шага до следующей точки
@@ -63,13 +61,12 @@ namespace MethodsOptimization.src.Methods
         /// <param name="alfa"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        protected bool CheckLengthH(Vector alfa, Vector p)
+        public bool CheckLengthH(Vector alfa, Vector p)
         {
-            if (!Lim.Flags.NormaLengthH) return true;
             bool rez = false;
             for (int i = 0; i < alfa.Size && !rez; i++)
             {
-                rez |= Lim.CheckEPS(Lim.Flags.NormaLengthH, (alfa[i] * p).Norma);
+                rez |= Lim.CheckEPS((alfa[i] * p).Norma);
             }
             return rez;
         }
@@ -79,11 +76,10 @@ namespace MethodsOptimization.src.Methods
         /// <param name="p"></param>
         /// <param name="norma"></param>
         /// <returns></returns>
-        protected bool CheckF(Function f, Vector x1, Vector x2)
+        public bool CheckF(Function f, Vector x1, Vector x2)
         {
-            if (!Lim.Flags.NormaValue) return true;
             double f1 = f.Parse(x1), f2 = f.Parse(x2);
-            return Lim.CheckEPS(Lim.Flags.NormaValue, f1 - f2);
+            return Lim.CheckEPS(f1 - f2);
         }
         /// <summary>
         /// Проверка погрешности градиента
@@ -92,10 +88,9 @@ namespace MethodsOptimization.src.Methods
         /// <param name="x"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        protected bool CheckGF(Function f, Vector x, Vector p)
+        public bool CheckGF(Function f, Vector x, Vector p)
         {
-            if (!Lim.Flags.NormaGradienta) return true;
-            return Lim.CheckEPS(Lim.Flags.NormaGradienta, Math.GF(f, x, p));
+            return Lim.CheckEPS(Math.GF(f, x, p));
         }
     }
 }

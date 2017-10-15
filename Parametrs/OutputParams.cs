@@ -44,7 +44,7 @@ namespace MethodsOptimization.src.Parametrs
         {
             OutputParams clone = new OutputParams();
             clone.K = K;
-            clone.Alfa = (Vector)Alfa.Clone();
+            if (Alfa != null) clone.Alfa = (Vector)Alfa.Clone();
             clone.Alfa_h = Alfa_h;
             return clone;
         }

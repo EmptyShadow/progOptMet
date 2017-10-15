@@ -50,7 +50,7 @@ namespace MethodsOptimization.src.Functions
         public static Vector GF(Function f, Vector x)
         {
             Vector g = new Vector();
-            // Берем частные производные по каждой переменной и умножаем на орту
+            // Берем частные производные по каждой переменной
             for (int i = 0; i < x.Size; ++i)
             {
                 g.Push(DFatXByIVar(f, x, i));

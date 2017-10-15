@@ -171,7 +171,7 @@ namespace MethodsOptimization.src.Parametrs.Vars
             {
                 if (!checkIndex(number))
                 {
-                    return double.NaN;
+                    throw new Exception("Ошибка получения элемента вектора по индексу: выход за пределы вектора");
                 }
                 return (double)vars[number];
             }

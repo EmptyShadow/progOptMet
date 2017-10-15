@@ -1,5 +1,6 @@
 ﻿using System;
 using MethodsOptimization.src.Parametrs.Vars;
+using MethodsOptimization.src.Functions;
 
 namespace MethodsOptimization.src.Parametrs
 {
@@ -35,7 +36,8 @@ namespace MethodsOptimization.src.Parametrs
         /// </summary>
         public void WriteOutputInInput()
         {
-            if (In == null || Out == null) return;
+            if (Out == null) throw new Exception("Ошибка записи выходных параметров во входные параметры: не установленны выходные параметры");
+            if (In == null) In = new InputParams();
             In.Alfa = Out.Alfa;
             In.Alfa_h = Out.Alfa_h;
         }
@@ -64,7 +66,7 @@ namespace MethodsOptimization.src.Parametrs
         /// <returns></returns>
         public double GetAlfa_ByOut()
         {
-            if (Out == null || Out.Alfa.Size == 0) return double.NaN;
+            if (Out == null || Out.Alfa.Size == 0) throw new Exception("Ошибка в получении шага локализации минимума по выходным параметрам: не установленны выходные параметры или не установлен интервал локализации");
             double summ = 0.0;
             for (int i = 0; i < Out.Alfa.Size; i++)
             {
@@ -79,7 +81,7 @@ namespace MethodsOptimization.src.Parametrs
         /// <returns></returns>
         public double GetAlfa_ByIn()
         {
-            if (In == null || In.Alfa.Size == 0) return double.NaN;
+            if (In == null || In.Alfa.Size == 0) throw new Exception("Ошибка в получении шага локализации минимума по входным параметрам: не установленны входные параметры или не установлен интервал локализации");
             double summ = 0.0;
             for (int i = 0; i < In.Alfa.Size; i++)
             {
@@ -95,7 +97,9 @@ namespace MethodsOptimization.src.Parametrs
         /// <returns></returns>
         public Vector GetX_atAlfaI(int i)
         {
-            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size <= i) return null;
+            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size <= i)
+                throw new Exception("Ошибка получения переменной минимума по точке из интервала локализации выходных параметров:" +
+                    " не установленны входные или выходные параметры");
             return In.X0 + Out.Alfa[i] * In.P;
         }
 
@@ -105,9 +109,10 @@ namespace MethodsOptimization.src.Parametrs
         /// <returns></returns>
         public Vector GetX_ByIn()
         {
-            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size == 0) return null;
+            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size == 0)
+                throw new Exception("Ошибка получения переменной минимума по входным параметрам:" +
+                    " не установленны входные или выходные параметры");
             double a_ = GetAlfa_ByIn();
-            if (a_ == double.NaN) return null;
             return In.X0 + a_ * In.P;
         }
         /// <summary>
@@ -116,10 +121,22 @@ namespace MethodsOptimization.src.Parametrs
         /// <returns></returns>
         public Vector GetX_ByOut()
         {
-            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size == 0) return null;
+            if (In == null || Out == null || In.X0 == null || In.P == null || Out.Alfa.Size == 0)
+                throw new Exception("Ошибка получения переменной минимума по выходным параметрам:" +
+                    " не установленны входные или выходные параметры");
             double a_ = GetAlfa_ByOut();
-            if (a_ == double.NaN) return null;
             return In.X0 + a_ * In.P;
+        }
+
+        public Vector GetX_ByChainAlfaOut()
+        {
+            Vector x_ = In.X0, agp;
+            for (int i = 0; i < Out.Alfa.Size; i++)
+            {
+                agp = -Functions.Math.GF(In.Y, x_);
+                x_ = x_ + Out.Alfa[i] * agp;
+            }
+            return x_;
         }
         /// <summary>
         /// Получить минимум функции по 
@@ -128,7 +145,6 @@ namespace MethodsOptimization.src.Parametrs
         public double F_ByIn()
         {
             Vector x_ = GetX_ByIn();
-            if (x_ == null) return double.NaN;
             return In.Y.Parse(x_);
         }
         /// <summary>
@@ -138,7 +154,6 @@ namespace MethodsOptimization.src.Parametrs
         public double F_ByOut()
         {
             Vector x_ = GetX_ByOut();
-            if (x_ == null) return double.NaN;
             return In.Y.Parse(x_);
         }
 

@@ -104,7 +104,7 @@ namespace MethodsOptimization.src.Functions.Parsers
             // Проверка совместимости
             if (vars.Count != values.Size)
             {
-                return double.NaN;
+                throw new Exception("Ошибка парсера: количество переменных не совподает с количеством значений переменных");
             }
             // Присвоение значени переменным
             int i = 0;
@@ -120,7 +120,7 @@ namespace MethodsOptimization.src.Functions.Parsers
             if (rez.rest.Length != 0)
             {
                 // то ошибка разбора
-                throw new Exception("Error: it is not possible to parse a function;\n" + rez.rest);
+                throw new Exception("Ошибка парсера: парсер не смог разобрать участок функции (" + rez.rest + ")");
             }
             return rez.acc;
         }
@@ -384,7 +384,7 @@ namespace MethodsOptimization.src.Functions.Parsers
             {
                 return new Result(System.Math.Exp(r.acc), r.rest);
             }
-            throw new Exception("Error: there is no such function " + func + ";");
+            throw new Exception("Ошибка парсера: под функция " + func + " не подерживается парсером");
         }
     }
 }
