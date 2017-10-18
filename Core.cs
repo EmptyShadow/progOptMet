@@ -33,6 +33,7 @@ namespace MethodsOptimization.src
             MDS.Add(new GoldenSection1());
             MDS.Add(new Powell());
             MDS.Add(new Koshi());
+            MDS.Add(new GaussSeidel());
         }
 
         /// <summary>

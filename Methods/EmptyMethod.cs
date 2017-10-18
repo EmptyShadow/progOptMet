@@ -80,6 +80,11 @@ namespace MethodsOptimization.src.Methods
             return Math.DFatXByP(f, x, p);
         }
 
+        virtual protected double DFatXByIVar(Vector x, int num)
+        {
+            return Math.DFatXByIVar(f, x, num);
+        }
+
         virtual protected double GdF(Vector x, Vector p)
         {
             return Math.GF(f, x, p);

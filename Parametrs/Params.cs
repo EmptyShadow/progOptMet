@@ -48,7 +48,7 @@ namespace MethodsOptimization.src.Parametrs
         public void InitOut()
         {
             Out = new OutputParams();
-            Out.K = 0;
+            Out.K = 1;
             Out.Alfa_h = In.Alfa_h;
             if (In.Alfa == null)
             {
