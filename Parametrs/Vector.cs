@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System;
 
-namespace MethodsOptimization.src.Parametrs.Vars
+namespace MethodsOptimization.src.Parametrs
 {
     class Vector: ICloneable
     {
@@ -31,7 +31,7 @@ namespace MethodsOptimization.src.Parametrs.Vars
             Vector sum = new Vector();
             if (v1.Size != v2.Size)
             {
-                return new Vars.Vector();
+                throw new Exception("Vector Ошибка: размеры векторов не совпадают");
             }
             for (int i = 0; i < v1.Size; i++)
             {
@@ -51,7 +51,7 @@ namespace MethodsOptimization.src.Parametrs.Vars
             Vector raz = new Vector();
             if (v1.Size != v2.Size)
             {
-                return new Vars.Vector();
+                throw new Exception("Vector Ошибка: размеры векторов не совпадают");
             }
             for (int i = 0; i < v1.Size; i++)
             {
@@ -108,7 +108,7 @@ namespace MethodsOptimization.src.Parametrs.Vars
         {
             if (v1.Size != v2.Size)
             {
-                return 0.0;
+                throw new Exception("Vector Ошибка: размеры векторов не совпадают");
             }
             double sum = 0.0;
             for (int i = 0; i < v1.Size; i++)
@@ -241,7 +241,7 @@ namespace MethodsOptimization.src.Parametrs.Vars
         public static Vector random(int n, int absMax)
         {
             Vector random = new Vector();
-            if (n < 0) return random;
+            n = Math.Abs(n);
             Random gen = new Random();
             for (int i = 0; i < n; i++)
             {
@@ -259,7 +259,8 @@ namespace MethodsOptimization.src.Parametrs.Vars
         public static Vector GetZeroBeside(int n, int i)
         {
             Vector zero = new Vector();
-            if (n < 0 || i >= n) return zero;
+            n = Math.Abs(n);
+            if (i >= n) throw new Exception("Vector Ошибка: выход за пределы вектора");
             for (int j = 0; j < n; j++)
             {
                 if (j == i)

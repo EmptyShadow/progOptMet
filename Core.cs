@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MethodsOptimization.src.Methods;
+﻿using MethodsOptimization.src.Methods;
 using MethodsOptimization.src.Methods.MultiDimensionalSearch;
-using MethodsOptimization.src.Functions;
 
 namespace MethodsOptimization.src
 {
@@ -32,8 +26,12 @@ namespace MethodsOptimization.src
             MDS.Add(new Swenn());
             MDS.Add(new GoldenSection1());
             MDS.Add(new Powell());
+            MDS.Add(new Fibonacci2());
+            MDS.Add(new Bolzano());
+
             MDS.Add(new Koshi());
             MDS.Add(new GaussSeidel());
+            MDS.Add(new MethodСonjugateGradient());
         }
 
         /// <summary>

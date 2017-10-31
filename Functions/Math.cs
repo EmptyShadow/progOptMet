@@ -1,5 +1,4 @@
-﻿using MethodsOptimization.src.Functions;
-using MethodsOptimization.src.Parametrs.Vars;
+﻿using MethodsOptimization.src.Parametrs;
 
 namespace MethodsOptimization.src.Functions
 {

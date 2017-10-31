@@ -1,6 +1,5 @@
 ﻿using MethodsOptimization.src.Functions;
 using MethodsOptimization.src.Parametrs;
-using MethodsOptimization.src.Parametrs.Vars;
 
 namespace MethodsOptimization.src.Methods
 {
@@ -12,7 +11,7 @@ namespace MethodsOptimization.src.Methods
         /// <summary>
         /// Имя метода
         /// </summary>
-        protected string name = "Empty method";
+        public virtual string Name { get; set; } = "Empty method";
 
         /// <summary>
         /// Функция с которой работаем
@@ -27,7 +26,7 @@ namespace MethodsOptimization.src.Methods
         /// <param name="parametrs"></param>
         /// <param name="m"></param>
         /// <returns></returns>
-        abstract public double Run(ref Params parametrs, EmptyMethod m = null);
+        abstract public Params Run(Params p, EmptyMethod m = null);
 
         /// <summary>
         /// Метод вычисления функции
@@ -45,11 +44,6 @@ namespace MethodsOptimization.src.Methods
         /// <returns></returns>
         abstract protected Vector X(Vector x, double Alfa = 0.0, Vector p = null);
 
-        virtual public string GetName()
-        {
-            return name;
-        }
-
         /// <summary>
         /// Получение метода по имени
         /// </summary>
@@ -65,42 +59,7 @@ namespace MethodsOptimization.src.Methods
 
         new virtual public string ToString()
         {
-            return "Method: " + name + "\n";
+            return "Method: " + Name + "\n";
         }
-
-        /// <summary>
-        /// Производная в отчке по направлению
-        /// </summary>
-        /// <param name="f"></param>
-        /// <param name="x"></param>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        virtual protected double dF(Vector x, Vector p)
-        {
-            return Math.DFatXByP(f, x, p);
-        }
-
-        virtual protected double DFatXByIVar(Vector x, int num)
-        {
-            return Math.DFatXByIVar(f, x, num);
-        }
-
-        virtual protected double GdF(Vector x, Vector p)
-        {
-            return Math.GF(f, x, p);
-        }
-
-        virtual protected Vector GdF(Vector x)
-        {
-            return Math.GF(f, x);
-        }
-
-        /// <summary>
-        /// Критерий окончания поиска для метода
-        /// </summary>
-        /// <param name="In"></param>
-        /// <param name="Out"></param>
-        /// <returns></returns>
-        abstract protected bool SEC(InputParams In, OutputParams Out);
     }
 }

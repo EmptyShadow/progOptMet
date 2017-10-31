@@ -1,7 +1,6 @@
 ﻿using System;
-using MethodsOptimization.src.Parametrs.Vars;
+using MethodsOptimization.src.Parametrs;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace MethodsOptimization.src.Functions.Parsers
 {
@@ -227,13 +226,7 @@ namespace MethodsOptimization.src.Functions.Parsers
                 string next = current.rest.Substring(1);
 
                 // получение значения функции правее от операции
-                if (next[0] == '(')
-                {
-                    current = Bracket(next);
-                } else
-                {
-                    current = FunctionVariable(next);
-                }
+                current = Bracket(next);
                 // если опреация степени
                 acc = System.Math.Pow(acc, current.acc);
             }
@@ -383,6 +376,10 @@ namespace MethodsOptimization.src.Functions.Parsers
             else if (func == "exp")
             {
                 return new Result(System.Math.Exp(r.acc), r.rest);
+            }
+            else if (func == "ln")
+            {
+                return new Result(System.Math.Log(r.acc), r.rest);
             }
             throw new Exception("Ошибка парсера: под функция " + func + " не подерживается парсером");
         }

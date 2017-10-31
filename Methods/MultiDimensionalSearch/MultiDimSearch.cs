@@ -1,5 +1,4 @@
 ﻿using MethodsOptimization.src.Functions;
-using MethodsOptimization.src.Parametrs.Vars;
 using MethodsOptimization.src.Parametrs;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
@@ -8,7 +7,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
     {
         public MultiDimSearch()
         {
-            name = "MultiDimensionalSearch";
+            Name = "MultiDimensionalSearch";
         }
 
         public override void Add(EmptyMethod m)
@@ -21,7 +20,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             throw new System.NotImplementedException();
         }
 
-        public override double Run(ref Params parametrs, EmptyMethod m = null)
+        public override Params Run(Params p, EmptyMethod m = null)
         {
             throw new System.NotImplementedException();
         }
@@ -38,11 +37,6 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 return f.Parse(X(x, Alfa, p));
             }
             throw new System.Exception("Ошибка получения значения функции: переданны не установленные данные");
-        }
-
-        protected override bool SEC(InputParams In, OutputParams Out)
-        {
-            throw new System.NotImplementedException();
         }
 
         /// <summary>

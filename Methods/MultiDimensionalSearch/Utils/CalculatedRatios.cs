@@ -1,4 +1,4 @@
-﻿using MethodsOptimization.src.Parametrs.Vars;
+﻿using MethodsOptimization.src.Parametrs;
 using MethodsOptimization.src.Functions;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch

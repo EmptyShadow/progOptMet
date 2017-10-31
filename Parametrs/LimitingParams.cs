@@ -14,42 +14,40 @@ namespace MethodsOptimization.src.Parametrs
         /// </summary>
         public int K { get; set; } = 40;
         /// <summary>
-        /// погрешность
+        /// погрешность по шагу приближения
         /// </summary>
-        public double Eps { get; set; }  = 1e-3;
-
+        public double EpsAlfa { get; set; }  = 1e-3;
         /// <summary>
-        /// Проверка ограничения по количетву итераций,
-        /// Если флаги ограничений не установленны, то false
-        /// Если флаг ограничения по количеству итераций не установлен, то false
-        /// Если ограничение выполняется, то true, иначе false
+        /// погрешность по аргументу функции
         /// </summary>
-        /// <param name="numIteration"></param>
-        /// <returns></returns>
-        public bool CheckNumIteration(int numIteration)
-        {
-            return numIteration >= K;
-        }
-
+        public double EpsX { get; set; } = 1e-3;
         /// <summary>
-        /// Проверка числа на погрешность,
-        /// Если флаги ограничений не установленны, то false
-        /// Если флаг ограничения по количеству итераций не установлен, то false
-        /// Если ограничение выполняется, то true, иначе false
+        /// погрешность по значению функции
         /// </summary>
-        /// <param name="flag"></param>
-        /// <param name="norma"></param>
-        /// <returns></returns>
-        public bool CheckEPS(double value)
-        {
-            return System.Math.Abs(value) <= Eps;
-        }
+        public double EpsF { get; set; } = 1e-3;
+        /// <summary>
+        /// погрешность по норме шага
+        /// </summary>
+        public double EpsNormaH { get; set; } = 1e-3;
+        /// <summary>
+        /// погрешность но норме градента
+        /// </summary>
+        public double EpsNormaGradienta { get; set; } = 1e-3;
+        /// <summary>
+        /// погрешность по значению градиента
+        /// </summary>
+        public double EpsGradient { get; set; } = 1e-3;
 
         public override string ToString()
         {
             String str = "Limiting params:\n" +
                 "\tK: " + K + "\n" +
-                "\tEps: " + Eps.ToString("G8") + "\n";
+                "\tEpsAlfa: " + EpsAlfa.ToString("G8") + "\n" +
+                "\tEpsX: " + EpsX.ToString("G8") + "\n" +
+                "\tEpsF: " + EpsF.ToString("G8") + "\n" +
+                "\tEpsNormaH: " + EpsNormaH.ToString("G8") + "\n" +
+                "\tEpsGradient: " + EpsGradient.ToString("G8") + "\n" +
+                "\tEpsNormaGradienta: " + EpsNormaGradienta.ToString("G8") + "\n";
             return str;
         }
 
@@ -57,7 +55,12 @@ namespace MethodsOptimization.src.Parametrs
         {
             LimitingParams clone = new LimitingParams();
             clone.K = K;
-            clone.Eps = Eps;
+            clone.EpsAlfa = EpsAlfa;
+            clone.EpsX = EpsX;
+            clone.EpsF = EpsF;
+            clone.EpsNormaH = EpsNormaH;
+            clone.EpsNormaGradienta = EpsNormaGradienta;
+            clone.EpsGradient = EpsGradient;
             return clone;
         }
     }
