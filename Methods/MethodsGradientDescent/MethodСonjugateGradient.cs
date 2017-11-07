@@ -1,9 +1,7 @@
 ﻿using MethodsOptimization.src.Methods.MultiDimensionalSearch;
 using MethodsOptimization.src.Parametrs;
-using MethodsOptimization.src.Functions;
-using System;
 
-namespace MethodsOptimization.src.Methods
+namespace MethodsOptimization.src.Methods.MethodsGradientDescent
 {
     class MethodСonjugateGradient: MultiDimSearch
     {

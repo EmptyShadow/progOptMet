@@ -14,6 +14,12 @@ namespace MethodsOptimization.src.Methods
         /// </summary>
         private List<EmptyMethod> listMs = null;
 
+        public Composite(string name)
+        {
+            Name = (string)name.Clone();
+            listMs = new List<EmptyMethod>();
+        }
+
         public Composite()
         {
             Name = "Composer methods";

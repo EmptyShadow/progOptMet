@@ -58,7 +58,7 @@ namespace MethodsOptimization.src.Functions.Parsers
                 }
                 if (f != "")
                 { // если что-нибудь нашли
-                    if (i == s.Length || (s.Length > i && isOperator(s[i])))
+                    if (i == s.Length || (s.Length > i && (isOperator(s[i]) || s[i] == ')')))
                     { // если не скобка, то функция
                         set.Add(f);
                     }
@@ -337,7 +337,7 @@ namespace MethodsOptimization.src.Functions.Parsers
             }
 
             // конвертируем строку в число
-            double dPart = double.Parse(s.Substring(0, i));
+            double dPart = double.Parse(s.Substring(0, i).Replace('.', ','));
             // учитываем возможноть знака
             if (negative) dPart = -dPart;
             // обрезаем строку парсинга

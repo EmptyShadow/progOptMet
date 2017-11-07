@@ -1,7 +1,7 @@
 ﻿using System;
 using MethodsOptimization.src.Parametrs;
 
-namespace MethodsOptimization.src.Methods
+namespace MethodsOptimization.src.Methods.MethodsGradientDescent
 {
     /// <summary>
     /// Класс для работы с сопряженным направлением
@@ -50,7 +50,7 @@ namespace MethodsOptimization.src.Methods
         public static double MethodPolakRibiere(Vector gy_k, Vector gy_km)
         {
             Vector gamma = gy_k - gy_km;
-            return (gy_k * gamma) / (gy_km * gamma);
+            return (gy_k * gamma) / gy_km.Norma;
         }
     }
 }
