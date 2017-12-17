@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MethodsOptimization.src.Functions.Parsers
 {
-    class MathParser
+    public class MathParser
     {
         /// <summary>
         /// Функция
@@ -15,6 +15,8 @@ namespace MethodsOptimization.src.Functions.Parsers
         /// </summary>
         SortedDictionary<string, double> varsAndValues = new SortedDictionary<string, double>();
         readonly SortedSet<string> vars = new SortedSet<string>();
+
+        public string Function { get { return function; } }
 
         public MathParser(string function)
         {

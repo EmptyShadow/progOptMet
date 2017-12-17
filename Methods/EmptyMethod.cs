@@ -6,7 +6,7 @@ namespace MethodsOptimization.src.Methods
     /// <summary>
     /// Пустой метод для наследования и частичной реализации
     /// </summary>
-    abstract class EmptyMethod
+    public abstract class EmptyMethod
     {
         /// <summary>
         /// Имя метода
@@ -14,9 +14,35 @@ namespace MethodsOptimization.src.Methods
         public virtual string Name { get; set; } = "Empty method";
 
         /// <summary>
+        /// Нормированные вектора направлений
+        /// </summary>
+        public bool NormalizationDirections { get; set; } = false;
+        
+        /// <summary>
         /// Функция с которой работаем
         /// </summary>
         protected Function f;
+
+        /// <summary>
+        /// Используемые методы
+        /// </summary>
+        public EmptyMethod MethodsUsed { get; set; }
+
+        /// <summary>
+        /// Метод использует другие методы
+        /// Если установленно true, то MethodsUsed не должны быть null
+        /// </summary>
+        protected bool usesOthersMethods = false;
+
+        /// <summary>
+        /// Метод использует другие методы
+        /// </summary>
+        public bool UsesOthersMethods { get; }
+
+        /// <summary>
+        /// Параметры ограничения
+        /// </summary>
+        public LimParams Lim { get; set; } = new LimParams();
 
         public EmptyMethod() { }
 
@@ -26,7 +52,7 @@ namespace MethodsOptimization.src.Methods
         /// <param name="parametrs"></param>
         /// <param name="m"></param>
         /// <returns></returns>
-        abstract public Params Run(Params p, EmptyMethod m = null);
+        abstract public Result Run(Params p);
 
         /// <summary>
         /// Метод вычисления функции

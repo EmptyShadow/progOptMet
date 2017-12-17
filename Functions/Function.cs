@@ -7,7 +7,7 @@ namespace MethodsOptimization.src.Functions
     /// <summary>
     /// Математическая функция
     /// </summary>
-    class Function: MathParser
+    public class Function: MathParser
     {
         public Function(string s): base(s) {}
 

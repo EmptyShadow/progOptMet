@@ -1,6 +1,6 @@
 ﻿using MethodsOptimization.src.Methods;
 using MethodsOptimization.src.Methods.MultiDimensionalSearch;
-using MethodsOptimization.src.Methods.MethodsGradientDescent;
+using MethodsOptimization.src.Methods.LinearSearch;
 
 namespace MethodsOptimization.src
 {

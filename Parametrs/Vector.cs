@@ -3,7 +3,7 @@ using System;
 
 namespace MethodsOptimization.src.Parametrs
 {
-    class Vector: ICloneable
+    public class Vector: ICloneable, IEnumerable
     {
         /// <summary>
         /// переменные в векторе
@@ -17,6 +17,16 @@ namespace MethodsOptimization.src.Parametrs
             foreach(double v in vs)
             {
                 vars.Add(v);
+            }
+        }
+
+        public Vector(string s)
+        {
+            s = s.Replace(" ", "");
+            string[] values = s.Split(';');
+            foreach(string value in values)
+            {
+                vars.Add(Double.Parse(value));
             }
         }
 
@@ -233,6 +243,15 @@ namespace MethodsOptimization.src.Parametrs
         }
 
         /// <summary>
+        /// Получить нормированный вектор
+        /// </summary>
+        /// <returns></returns>
+        public Vector Rationing()
+        {
+            return this / Norma;
+        }
+
+        /// <summary>
         /// Получение случайного вектора
         /// </summary>
         /// <param name="n">Размер</param>
@@ -300,6 +319,11 @@ namespace MethodsOptimization.src.Parametrs
             return (number >= 0 && number < Size);
         }
 
+        public IEnumerator GetEnumerator()
+        {
+            return vars.GetEnumerator();
+        }
+
         /// <summary>
         /// первая переменная из вектора
         /// </summary>
@@ -320,6 +344,17 @@ namespace MethodsOptimization.src.Parametrs
             {
                 return this[Size - 1];
             }
+        }
+
+        public string Vars()
+        {
+            string s = "";
+            foreach(double var in vars)
+            {
+                s += var.ToString("G8") + ";";
+            }
+            s = s.Substring(0, s.Length - 1);
+            return s;
         }
     }
 }
