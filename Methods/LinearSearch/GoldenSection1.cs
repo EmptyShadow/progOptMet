@@ -26,6 +26,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                 cP.P = cP.P.Rationing();
             }
             Result result = cP.ToResult();
+            Vector x = result.ListX[0], P = result.ListP[0];
             // устанавливаем функцию
             f = cP.Y;
 
@@ -33,8 +34,8 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             mu = GoldenNumbers.MuGoldenSection(result.Alfas[0], result.Alfas[1]);
             while(result.K <= Lim.K)
             {
-                Vector x1 = X(cP.X0, result.Alfas[0], cP.P);
-                Vector x2 = X(cP.X0, result.Alfas[1], cP.P);
+                Vector x1 = X(x, result.Alfas[0], P);
+                Vector x2 = X(x, result.Alfas[1], P);
                 if (f.Parse(x1) < f.Parse(x2))
                 {
                     result.Alfas[1] = mu;
@@ -57,7 +58,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             }
 
             result.AlfaMin = (result.Alfas[1] + result.Alfas[0]) / 2.0;
-            result.XMin = X(cP.X0, result.AlfaMin, cP.P);
+            result.XMin = X(x, result.AlfaMin, P);
 
             return result;
         }

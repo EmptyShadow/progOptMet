@@ -8,7 +8,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
     {
         public CubicInterpolation ()
         {
-            Name = "Cubic interpolation";
+            Name = "Кубическая интерполяция";
         }
 
         public override Result Run(Params p)
@@ -21,6 +21,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                 cP.P = cP.P.Rationing();
             }
             Result result = cP.ToResult();
+            Vector x = result.ListX[0], P = result.ListP[0];
             // утановить функцию
             f = p.Y;
             // основной этап
@@ -28,10 +29,10 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             {
                 // шаг 1 вычислить gamma
                 double alfa_;
-                Vector xalfa1 = X(cP.X0, result.Alfas[0], cP.P);
-                Vector xalfa2 = X(cP.X0, result.Alfas[1], cP.P);
-                double dfalfa1 = Functions.Math.GF(f, xalfa1, cP.P);
-                double dfalfa2 = Functions.Math.GF(f, xalfa2, cP.P);
+                Vector xalfa1 = X(x, result.Alfas[0], P);
+                Vector xalfa2 = X(x, result.Alfas[1], P);
+                double dfalfa1 = Functions.Math.GF(f, xalfa1, P);
+                double dfalfa2 = Functions.Math.GF(f, xalfa2, P);
                 double z = dfalfa1 + dfalfa2 + 3.0 * (f.Parse(xalfa1) - f.Parse(xalfa2)) / (result.Alfas[1] - result.Alfas[0]);
                 double omega = System.Math.Sqrt(z * z - dfalfa1 * dfalfa2);
                 double gamma = (z + omega - dfalfa1) / (dfalfa2 - dfalfa1 + 2.0 * omega);
@@ -46,8 +47,8 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                     alfa_ = result.Alfas[0] + gamma * (result.Alfas[1] - result.Alfas[0]);
                 }
                 // шаг 2 проверить коп
-                Vector gfalfa_V = Functions.Math.GF(f, X(cP.X0, alfa_, cP.P));
-                if (Lim.CheckMinEps(Functions.Math.GF(f, X(cP.X0, alfa_, cP.P), cP.P)) || 
+                Vector gfalfa_V = Functions.Math.GF(f, X(x, alfa_, P));
+                if (Lim.CheckMinEps(Functions.Math.GF(f, X(x, alfa_, P), P)) || 
                     Lim.CheckNorma(gfalfa_V) || 
                     alfa_ == result.Alfas[0] || 
                     alfa_ == result.Alfas[1])
@@ -55,7 +56,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                     result.AlfaMin = alfa_;
                     break;
                 }
-                double gfalfa_ = Functions.Math.GF(f, X(cP.X0, alfa_, cP.P), cP.P);
+                double gfalfa_ = Functions.Math.GF(f, X(x, alfa_, P), P);
                 if (gfalfa_ > 0.0)
                 {
                     result.Alfas[1] = alfa_;
@@ -66,7 +67,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                 result.K++;
             } while (result.K < Lim.K);
 
-            if (!double.IsNaN(result.AlfaMin)) { result.XMin = X(cP.X0, result.AlfaMin, cP.P); }
+            if (!double.IsNaN(result.AlfaMin)) { result.XMin = X(x, result.AlfaMin, P); }
 
             return result;
         }

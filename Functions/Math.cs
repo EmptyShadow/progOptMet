@@ -25,6 +25,9 @@ namespace MethodsOptimization.src.Functions
         /// </summary>
         public static PartialDerivative DFByIVar = RightFiniteDifferenceApproximation;
 
+        /// <summary>
+        /// Функция второй производной
+        /// </summary>
         public static SecondPartialDerivative DDFByVars = DDFByVars1;
 
         /// <summary>
@@ -182,6 +185,52 @@ namespace MethodsOptimization.src.Functions
             x2MM[numVar1] -= H;
             x2MM[numVar2] -= H;
             return (f.Parse(x2PP) - f.Parse(x2PM) - f.Parse(x2MP) + f.Parse(x2MM)) / (4 * H * H);
+        }
+
+        public static Vector GetTheSolutionOfTheSystem(Matrix system, Vector vector)
+        {
+            if (system.CountRows != vector.Size) { return null; }
+            return CramerMethod(system, vector);
+        }
+
+        /// <summary>
+        /// Метод Крамера дл решения систем линейных уравнений
+        /// </summary>
+        /// <param name="system"></param>
+        /// <param name="vector"></param>
+        /// <returns></returns>
+        public static Vector CramerMethod(Matrix system, Vector vector)
+        {
+            double det = system.Det();
+            Vector solutionOfSystem = new Vector();
+            for (int i = 0; i < system.CountColumns; i++)
+            {
+                Matrix matrixReplaseIColumn = system.ReplaceColumnAt(vector, i);
+                double detI = matrixReplaseIColumn.Det();
+                solutionOfSystem.Push(detI / det);
+            }
+            return solutionOfSystem;
+        }
+
+        /// <summary>
+        /// Получить Гессиан в точке
+        /// </summary>
+        /// <param name="f"></param>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static Matrix GetMatrixHessianInPoint(Function f, Vector x)
+        {
+            Matrix matrix = new Matrix(x.Size, x.Size);
+
+            for (int i = 0; i < matrix.CountRows; i++)
+            {
+                for (int j = 0; j < matrix.CountColumns; j++)
+                {
+                    matrix[i, j] = DDFByVars(f, x, i, j);
+                }
+            }
+
+            return matrix;
         }
     }
 }

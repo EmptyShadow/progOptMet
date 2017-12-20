@@ -22,6 +22,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                 cP.P = cP.P.Rationing();
             }
             Result result = cP.ToResult();
+            Vector x = result.ListX[0], P = result.ListP[0];
 
             int n = 0; // номер числа фибоначчи
             double Fn = FibonacciNumbers.getPrevNumberFibonacci(System.Math.Abs(result.Alfas[0] - result.Alfas[1]) / Lim.Eps, ref n), 
@@ -33,8 +34,8 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             while (result.K <= Lim.K)
             {
                 mu = result.Alfas[0] + result.Alfas[1] - lambda;
-                f1 = f.Parse(X(cP.X0, lambda, cP.P));
-                f2 = f.Parse(X(cP.X0, mu, cP.P));
+                f1 = f.Parse(X(x, lambda, P));
+                f2 = f.Parse(X(x, mu, P));
                 if (lambda < mu && f1 < f2)
                 {
                     result.Alfas[1] = mu;
@@ -61,7 +62,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             }
             
             result.AlfaMin = (result.Alfas[1] + result.Alfas[0]) / 2.0;
-            result.XMin = X(cP.X0, result.AlfaMin, cP.P);
+            result.XMin = X(x, result.AlfaMin, P);
 
             return result;
         }

@@ -14,7 +14,7 @@ namespace MethodsOptimization.src.Parametrs
         /// <summary>
         /// Количество итераций
         /// </summary>
-        public int K { get; set; } = 0;
+        public int K { get; set; } = 1;
 
         /// <summary>
         /// Список точек
@@ -55,6 +55,16 @@ namespace MethodsOptimization.src.Parametrs
         public Vector GetMinPoint()
         {
             return ListX?.Last();
+        }
+
+        public Vector GetLastX()
+        {
+            return ListX.Last();
+        }
+
+        public Vector GetLastP()
+        {
+            return ListP.Last();
         }
     }
 }

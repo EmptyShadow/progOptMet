@@ -53,7 +53,8 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                     }
                 }
                 Vector d = result.ListX[n] - result.ListX[0];
-                if (Lim.CheckMinEps(f.Parse(result.ListX[0]), f.Parse(result.ListX[n])) || 
+                if (Lim.CheckMinEps(f.Parse(result.ListX[0]), f.Parse(result.ListX[n])) ||
+                    Lim.CheckMinEps(result.ListX[0], result.ListX[n]) ||
                     Lim.CheckNorma(d))
                 {
                     break;
@@ -61,6 +62,8 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 result.ListX[0] = result.ListX[n];
                 result.K++;
             } while (result.K < Lim.K);
+
+            result.XMin = result.ListX[result.ListX.Count - 1];
 
             return result;
         }

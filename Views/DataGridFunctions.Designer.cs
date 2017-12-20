@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.функцииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewFunctionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,6 +90,8 @@
             this.dataGridViewFunctions.Location = new System.Drawing.Point(0, 28);
             this.dataGridViewFunctions.Name = "dataGridViewFunctions";
             this.dataGridViewFunctions.ReadOnly = true;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridViewFunctions.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewFunctions.RowTemplate.Height = 24;
             this.dataGridViewFunctions.Size = new System.Drawing.Size(302, 242);
             this.dataGridViewFunctions.TabIndex = 1;

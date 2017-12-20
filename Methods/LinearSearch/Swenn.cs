@@ -28,11 +28,11 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             f = cP.Y;
             
             // производные по направлению
-            double fd_k, fd_kp;
-            Vector x1 = cP.X0, x2, P = cP.P;
+            double fd_k, fd_kp, fk, fkp;
+            Vector x1 = result.ListX[0], x2, P = result.ListP[0];
 
             // вычисляем производную в начальной точке
-            fd_k = Math.GF(f, cP.X0, cP.P);
+            fd_k = Math.GF(f, x1, P);
 
             // Устанавливаем две точки интервала в ноль
             result.Alfas = new Vector();
@@ -47,17 +47,19 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             }
             
             // Постепенно приближаемся к минимуму с заданной точностью
-            while (result.K <= Lim.K/* && !Lim.CheckMinEps(result.Alfas[0], result.Alfas[1])*/)
+            while (result.K <= Lim.K)
             {
                 // вычисляем новые данные
                 result.Alfas[1] = result.Alfas[0] + cP.H;
                 x2 = X(x1, result.Alfas[1], P);
 
                 // находим производные в текущей и следующей точке
-                fd_k = Math.GF(f, x1, cP.P);
-                fd_kp = Math.GF(f, x2, cP.P);
+                fd_k = Math.GF(f, x1, P);
+                fd_kp = Math.GF(f, x2, P);
+                fk = f.Parse(x1);
+                fkp = f.Parse(x2);
                 // проверяем критерий окончания поиска
-                if (fd_kp * fd_k < 0.0)
+                if (fd_kp * fd_k < 0.0 || fkp > fk)
                 {
                     // Если знаки разные, остановка
                     break;

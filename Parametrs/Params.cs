@@ -30,7 +30,7 @@ namespace MethodsOptimization.src.Parametrs
         /// <summary>
         /// Шаг изменения величин
         /// </summary>
-        public double H { get; set; } = 1e-2;
+        public double H { get; set; } = 1e-3;
 
         /// <summary>
         /// Исследуемая функция
@@ -41,13 +41,13 @@ namespace MethodsOptimization.src.Parametrs
         {
             if (result.ListX != null && result.ListX.Count != 0)
             {
-                X0 = result.ListX[result.ListX.Count - 1];
+                X0 = (Vector)result.ListX[result.ListX.Count - 1]?.Clone();
             }
             if (result.ListP != null && result.ListP.Count != 0)
             {
-                P = result.ListP[result.ListP.Count - 1];
+                P = (Vector)result.ListP[result.ListP.Count - 1]?.Clone();
             }
-            Alfa = result.Alfas;
+            Alfa = (Vector)result.Alfas.Clone();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace MethodsOptimization.src.Parametrs
             Result result = new Result();
             result.ListX.Add((Vector)X0.Clone());
             result.ListP.Add((Vector)P.Clone());
-            result.Alfas = Alfa;
+            result.Alfas = (Vector)Alfa.Clone();
             return result;
         }
 

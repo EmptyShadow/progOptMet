@@ -50,11 +50,13 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 result.ListX.Add(cP.X0);
                 result.K++;
                 /// проверяем критерий Пауэлла
-                if (/*!(g * cP.P <= 0.2 * g.Norma)*/g.Norma * g.Norma <= Lim.Eps)
+                if (!(g * cP.P <= 0.2 * g.Norma) || Lim.CheckMinEps(g * g) || Lim.CheckMinEps(result.ListX[result.ListX.Count - 1], result.ListX[result.ListX.Count - 2]))
                 {
                     break;
                 }
             } while (result.K < Lim.K);
+
+            result.XMin = result.ListX[result.ListX.Count - 1];
 
             return result;
         }

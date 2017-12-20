@@ -123,6 +123,118 @@ namespace MethodsOptimization.src.Views
                     Function = new Functions.Function("2 * x1^3 + 4 * x1 * x2^3 - 10 * x1 * x2 + x2^2"),
                     X = new Parametrs.Vector("5;2"),
                     P = new Parametrs.Vector("0;-1")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("100 * (x2 - x1^2)^2 + (1 - x1)^2"),
+                    X = new Parametrs.Vector("-1,2;1")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("100 * (x2 - x1^2)^2 + (1 - x1)^2"),
+                    X = new Parametrs.Vector("1,5;2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("100 * (x2 - x1^2)^2 + (1 - x1)^2"),
+                    X = new Parametrs.Vector("-2;-2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x1 - 1)^2 + (x2 - 3)^2 + 4 * (x3 + 5)^2"),
+                    X = new Parametrs.Vector("4;-1;2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("8 * x1^2 + 4 * x1 * x2 + 5 * x2^2"),
+                    X = new Parametrs.Vector("10;10")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("4 * (x1 - 5)^2 + (x2 - 6)^2"),
+                    X = new Parametrs.Vector("8;9")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("4 * (x1 - 5)^2 + (x2 - 6)^2"),
+                    X = new Parametrs.Vector("0;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x2 - x1^2)^2 + (1 - x1)^2"),
+                    X = new Parametrs.Vector("1,5;2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x2 - x1^2)^2 + (1 - x1)^2"),
+                    X = new Parametrs.Vector("0;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x2 - x1^2)^2 + (1 - x1)^2"),
+                    X = new Parametrs.Vector("-1,2;1")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x2 - x1^2)^2 + 100 * (1 - x1^2)^2"),
+                    X = new Parametrs.Vector("1,5;2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x2 - x1^2)^2 + 100 * (1 - x1^2)^2"),
+                    X = new Parametrs.Vector("1;2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("3 * (x1 - 4)^2 + 5 * (x2 + 3)^2 + 7 * (2 * x3 + 1)^2"),
+                    X = new Parametrs.Vector("2;-2;-2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("3 * (x1 - 4)^2 + 5 * (x2 + 3)^2 + 7 * (2 * x3 + 1)^2"),
+                    X = new Parametrs.Vector("0;0;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("x1^3 + x2^2 - 3 * x1 - 2 * x2 + 2"),
+                    X = new Parametrs.Vector("0;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("x1^3 + x2^2 - 3 * x1 - 2 * x2 + 2"),
+                    X = new Parametrs.Vector("-1;-1")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("-12 * x2 + 4 * x1^2 + 4 * x2^2 - 4 * x1 * x2"),
+                    X = new Parametrs.Vector("1;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x1 - 2)^4 + (x1 - 2 * x2)^2"),
+                    X = new Parametrs.Vector("0;3")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x1 * x2 * x3 - 1)^2 + 5 * (x3 * (x1 + x2) - 2)^2 + 2 * (x1 + x2 + x3 - 3)^2"),
+                    X = new Parametrs.Vector("-5;4;2")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("4 * x1^2 + 3 * x2^2 - 4 * x1 * x2^2 + x1"),
+                    X = new Parametrs.Vector("0;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x1^2 + x2 - 11)^2 + (x1 + x2^2 - 7)^2"),
+                    X = new Parametrs.Vector("0;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("100 * (x2 - x1^3)^2 + (1 - x1)^2"),
+                    X = new Parametrs.Vector("-1,2;1")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(1.5 - x1 * (1 - x2))^2 + (2.25 - x1 * (1 - x2^2))^2 + (2.625 - x1 * (1 - x2^3))^2"),
+                    X = new Parametrs.Vector("0;0")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(x1 + 10 * x2)^2 + 5 * (x3 - x4)^2 + (x2 - 2 * x3)^4 + 10 * (x1 - x4)^4"),
+                    X = new Parametrs.Vector("-3;-1;0;1")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("100 * (x2 - x1^2)^2 + (1 - x1)^2 + 90 * (x4 - x3^2)^2 + (1 - x3)^3 + 10.1 * ((x2 - 1)^2 + (x4 - 1)^2) + 19.8 * (x2 - 1) * (x4 - 1)"),
+                    X = new Parametrs.Vector("-3;-1;-3;-1")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("(2 * x1^2 + 3 * x2^2) * exp(x1^2 - x2^2)"),
+                    X = new Parametrs.Vector("1;0,5")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("0.1 * (12 + x1^2 + (1 + x2^2) / x1^2 + (x1^2 * x2^2 + 100) / (x1^4 * x2^4))"),
+                    X = new Parametrs.Vector("0,5;0,5")
+                },
+                new DataFunctionForm() {
+                    Function = new Functions.Function("100 * (x3 - 0.25 * (x1 + x2)^2)^2 + (1 - x1)^2 + (1 - x2)^2"),
+                    X = new Parametrs.Vector("-1,5;2;0")
                 }
             };
             AddFunction(list.ToArray());

@@ -31,12 +31,13 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             double t = result.Alfas[1];
             result.Alfas[1] = (result.Alfas[0] + result.Alfas[1]) / 2.0;
             result.Alfas.Push(t);
+            Vector x = result.ListX[0], P = result.ListP[0];
 
-            double d = CalculatedRatios.First(f, cP.X0, cP.P, result.Alfas);
+            double d = CalculatedRatios.First(f, x, P, result.Alfas);
             if (double.IsNaN(d) || double.IsInfinity(d))
                 return result;
-            double fb = F(cP.X0, result.Alfas[1], cP.P), 
-                fd = F(cP.X0, d, cP.P);
+            double fb = F(x, result.Alfas[1], P), 
+                fd = F(x, d, P);
             while (result.K <= Lim.K)
             {
                 if (result.Alfas[1] < d && fb < fd)
@@ -57,11 +58,15 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                     result.Alfas[2] = result.Alfas[1];
                     result.Alfas[1] = d;
                 }
-                d = CalculatedRatios.Second(f, cP.X0, cP.P, result.Alfas);
-                fb = F(cP.X0, result.Alfas[1], cP.P); 
-                fd = F(cP.X0, d, cP.P);
-                if (System.Math.Abs(1 - d / result.Alfas[1]) > Lim.Eps &&
-                    System.Math.Abs(1 - fd / fb) > Lim.Eps)
+                d = CalculatedRatios.Second(f, x, P, result.Alfas);
+                Vector x1 = X(x, result.Alfas[1], P), x2 = X(x, d, P);
+                fb = f.Parse(x1); 
+                fd = f.Parse(x2);
+                if(Lim.CheckMinEps(result.Alfas[0], result.Alfas[1]) ||
+                    Lim.CheckMinEps(x1, x2) ||
+                    Lim.CheckMinEps(fb, fd))
+                /*if (System.Math.Abs(1 - d / result.Alfas[1]) > Lim.Eps ||
+                    System.Math.Abs(1 - fd / fb) > Lim.Eps)*/
                 {
                     break;
                 }
@@ -79,7 +84,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             result.Alfas.Remove(2);
 
             result.AlfaMin = (result.Alfas[1] + result.Alfas[0]) / 2.0;
-            result.XMin = X(cP.X0, result.AlfaMin, cP.P);
+            result.XMin = X(x, result.AlfaMin, P);
 
             return result;
         }

@@ -410,5 +410,36 @@ namespace MethodsOptimization.src.Parametrs
 
             return vector;
         }
+
+        /// <summary>
+        /// Замена строки
+        /// </summary>
+        /// <param name="newRow"></param>
+        /// <param name="indexReplace"></param>
+        /// <returns></returns>
+        public Matrix ReplaceRowAt(Vector newRow, int indexReplace)
+        {
+            if (CountColumns != newRow.Size || indexReplace >= CountRows) { return null; }
+            Matrix newMatrix = (Matrix)this.Clone();
+            matrix[indexReplace] = (Vector)newRow.Clone();
+            return newMatrix;
+        }
+
+        /// <summary>
+        /// Замена столбца
+        /// </summary>
+        /// <param name="newColumn"></param>
+        /// <param name="indexReplace"></param>
+        /// <returns></returns>
+        public Matrix ReplaceColumnAt(Vector newColumn, int indexReplace)
+        {
+            if (CountRows != newColumn.Size || indexReplace >= CountColumns) { return null; }
+            Matrix newMatrix = (Matrix)Clone();
+            for (int i = 0; i < CountRows; i++)
+            {
+                newMatrix[i][indexReplace] = newColumn[i];
+            }
+            return newMatrix;
+        }
     }
 }

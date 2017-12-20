@@ -87,6 +87,8 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 result.K++;
             } while (result.K < Lim.K);
 
+            result.XMin = cP.X0;
+
             //cP.X0 = xs[3];
             return result;
         }

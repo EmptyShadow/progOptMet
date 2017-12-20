@@ -59,6 +59,8 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 result.K++;
             }
 
+            result.XMin = result.ListX[result.ListX.Count - 1];
+
             return result;
         }
     }

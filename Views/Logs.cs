@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using MethodsOptimization.src.Parametrs;
 using MethodsOptimization.src.Methods;
 using System.IO;
+using System.Reflection;
+using MethodsOptimization.src.Methods.LinearSearch;
 
 namespace MethodsOptimization.src.Views
 {
@@ -24,23 +26,24 @@ namespace MethodsOptimization.src.Views
         {
             bool composite = false;
             if (method as Composite != null) { composite = true; }
-            richTextBoxLogs.Text += "Метод " + method.Name + ";";
-            richTextBoxLogs.Text += "Параметры " + "y = " + param.Y.Function + ";" + (param.X0 != null ? "X0 " + param.X0.Vars() + " " : "") + (param.P != null ? "P " + param.P.Vars() + " " : "") + ";";
-            richTextBoxLogs.Text += "Результат " + (!composite ? "K = " + result.K.ToString() + " " : "") + (result.XMin != null ? result.XMin.Vars() + " " : "") + ";";
-            richTextBoxLogs.Text += (composite ? "\n\n" : "\n");
+            richTextBoxLogs.Text += "Метод " + method.Name + "\t";
+            richTextBoxLogs.Text += "Параметры " + "y = " + param.Y.Function + "\t" + (param.X0 != null ? "X0 " + param.X0.Vars(): "") + "\t" + (param.P != null ? "P " + param.P.Vars(): "") + "\t";
+            richTextBoxLogs.Text += "Результат " + (!composite ? "K = " + result.K.ToString(): "") + "\t" + (result.XMin != null ? result.XMin.Vars() : "") + "\n";
+            if (composite) { richTextBoxLogs.Text += "\n"; }
         }
 
         public void WriteInLogError(Params param, EmptyMethod method, string messageErr)
         {
-            richTextBoxLogs.Text += "Метод " + method.Name + ";";
-            richTextBoxLogs.Text += "Параметры " + "y = " + param.Y.Function + ";" + (param.X0 != null ? "X0 " + param.X0.Vars() + " " : "") + (param.P != null ? "P " + param.P.Vars() + " " : "") + ";";
-            richTextBoxLogs.Text += "Сообщение " + messageErr + ";";
+            richTextBoxLogs.Text += "Метод " + method.Name + "\t";
+            richTextBoxLogs.Text += "Параметры " + "y = " + param.Y.Function + "\t" + (param.X0 != null ? "X0 " + param.X0.Vars() + " " : "") + (param.P != null ? "P " + param.P.Vars() + " " : "") + "\t";
+            richTextBoxLogs.Text += "Сообщение " + messageErr + "\t";
             richTextBoxLogs.Text += "\n";
         }
 
         private void сохранитьВФайлToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.ShowDialog();
             if (saveFileDialog.FileName != "")
             {
                 StreamWriter stream = new StreamWriter(saveFileDialog.FileName);
@@ -52,6 +55,11 @@ namespace MethodsOptimization.src.Views
         private void очиститьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             richTextBoxLogs.Text = "";
+        }
+
+        private void CreateWordDocument(string FileName)
+        {
+
         }
     }
 }

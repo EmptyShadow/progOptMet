@@ -31,13 +31,16 @@ namespace MethodsOptimization.src
             MDS.Add(new Fibonacci2());
             MDS.Add(new Bolzano());
             MDS.Add(new CubicInterpolation());
+            MDS.Add(new Dichotomy());
+            MDS.Add(new Davidon());
 
             // Инициализация скомпанованого списка методов многомерного градиентного поиска
-            Composite MGD = new Composite("Методы градиентного поиска");
+            Composite MGD = new Composite("Методы многомерного поиска");
             MGD.Add(new Koshi());
             MGD.Add(new GaussSeidel());
             MGD.Add(new MethodСonjugateGradient());
             MGD.Add(new Partan3());
+            MGD.Add(new NewtonGeneralizedMethod());
 
             Methods = new Composite("Методы");
             Methods.Add(MDS);
