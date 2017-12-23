@@ -58,7 +58,7 @@ namespace MethodsOptimization.src.Parametrs
         {
             Result result = new Result();
             result.ListX.Add((Vector)X0.Clone());
-            result.ListP.Add((Vector)P.Clone());
+            if (P != null) result.ListP.Add((Vector)P.Clone());
             result.Alfas = (Vector)Alfa.Clone();
             return result;
         }

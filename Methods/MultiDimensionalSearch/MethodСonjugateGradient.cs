@@ -27,7 +27,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
             do
             {
                 g = Functions.Math.GF(f, cP.X0);
-                if (NormalizationDirections)
+                if (NormalizationDirections && g.Norma > 1.0)
                 {
                     g = g.Rationing();
                 }

@@ -1,9 +1,4 @@
 ﻿using MethodsOptimization.src.Parametrs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
 {
@@ -30,7 +25,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 // Шаг 1
                 Matrix hessian = Functions.Math.GetMatrixHessianInPoint(f, result.GetLastX());
                 Vector P = Functions.Math.GetTheSolutionOfTheSystem(hessian, -gfk);
-                if (NormalizationDirections)
+                if (NormalizationDirections && P.Norma > 1.0)
                 {
                     P = P.Rationing();
                 }

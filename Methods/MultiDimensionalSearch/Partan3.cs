@@ -38,7 +38,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 parMet.X0 = result.ListX[0];
 
                 result.ListP[0] = -Math.GF(f, result.ListX[0]);
-                if (NormalizationDirections)
+                if (NormalizationDirections && result.ListP[0].Norma > 1.0)
                 {
                     result.ListP[0] = result.ListP[0].Rationing();
                 }
@@ -56,7 +56,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                     parMet.X0 = result.ListX[1];
 
                     result.ListP[1] = -Math.GF(f, result.ListX[1]);
-                    if (NormalizationDirections)
+                    if (NormalizationDirections && result.ListP[1].Norma > 1.0)
                     {
                         result.ListP[1] = result.ListP[1].Rationing();
                     }

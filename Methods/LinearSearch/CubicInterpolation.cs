@@ -16,7 +16,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             if (p.Alfa.Size != 2) throw new Exception(Name + " вектор альф не имеет 2 элемента");
             // Скопирвоать входные параметры для изменения
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
+            if (NormalizationDirections && cP.P.Norma > 1.0)
             {
                 cP.P = cP.P.Rationing();
             }

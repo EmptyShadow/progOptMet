@@ -187,6 +187,12 @@ namespace MethodsOptimization.src.Functions
             return (f.Parse(x2PP) - f.Parse(x2PM) - f.Parse(x2MP) + f.Parse(x2MM)) / (4 * H * H);
         }
 
+        /// <summary>
+        /// получить результат решения системы уравнений
+        /// </summary>
+        /// <param name="system"></param>
+        /// <param name="vector"></param>
+        /// <returns></returns>
         public static Vector GetTheSolutionOfTheSystem(Matrix system, Vector vector)
         {
             if (system.CountRows != vector.Size) { return null; }

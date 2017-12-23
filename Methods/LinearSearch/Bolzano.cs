@@ -19,31 +19,32 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             if (p.Alfa.Size != 2) throw new Exception("Больцано ошибка: интервал минимизации состоит не из двух точек");
             f = p.Y;
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
+            if (NormalizationDirections && cP.P.Norma > 1.0)
             {
                 cP.P = cP.P.Rationing();
             }
             Result result = cP.ToResult();
             Vector x = result.ListX[0], P = result.ListP[0];
 
-            double xk = (result.Alfas[0] + result.Alfas[1]) / 2.0, gf;
+            double alfaK, gf;
 
             while (result.K <= Lim.K)
             {
-                gf = Functions.Math.GF(f, X(x, xk, P), P);
-                if (gf > 0.0)
-                {
-                    result.Alfas[1] = xk;
-                }
-                else
-                {
-                    result.Alfas[0] = xk;
-                }
-                if (Lim.CheckMinEps(result.Alfas[0], result.Alfas[1]) || Lim.CheckMinEps(gf))
+                alfaK = (result.Alfas[0] + result.Alfas[1]) / 2.0;
+                gf = Functions.Math.GF(f, X(x, alfaK, P), P);
+                if (Lim.CheckMinEps(result.Alfas[0], result.Alfas[1]) ||
+                    Lim.CheckMinEps(gf))
                 {
                     break;
                 }
-                xk = (result.Alfas[1] + result.Alfas[0]) / 2.0;
+                if (gf > 0.0)
+                {
+                    result.Alfas[1] = alfaK;
+                }
+                else
+                {
+                    result.Alfas[0] = alfaK;
+                }
                 result.K++;
             }
             result.AlfaMin = (result.Alfas[1] + result.Alfas[0]) / 2.0;

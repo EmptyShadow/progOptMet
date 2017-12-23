@@ -70,6 +70,23 @@ namespace MethodsOptimization.src.Parametrs
             return raz;
         }
 
+        /*public static bool operator ==(Vector v1, Vector v2)
+        {
+            if (v1 == null && v2 == null) return true;
+            if (v1 == null || v2 == null) return false;
+            if (v1.Size != v2.Size) return false;
+            for (int i = 0; i < v1.Size; i++)
+            {
+                if (v1[i] != v2[i]) return false;
+            }
+            return true;
+        }
+
+        public static bool operator !=(Vector v1, Vector v2)
+        {
+            return !(v1 == v2);
+        }*/
+
         /// <summary>
         /// Умножение вектора на скаляр
         /// </summary>
@@ -355,6 +372,37 @@ namespace MethodsOptimization.src.Parametrs
             }
             s = s.Substring(0, s.Length - 1);
             return s;
+        }
+
+        public bool Equals(Vector v2)
+        {
+            if (v2 == null) return false;
+            if (Size != v2.Size) return false;
+            for (int i = 0; i < Size; i++)
+            {
+                if (this[i] != v2[i]) return false;
+            }
+            return true;
+        }
+
+        public int GetHashCode(object obj)
+        {
+            return vars.GetHashCode();
+        }
+
+        public int GetIndexMaxElem()
+        {
+            int i = 0;
+            double max = this[0];
+            for (int j = 1; j < vars.Count; j++)
+            {
+                if (this[j] > max)
+                {
+                    max = this[j];
+                    i = j;
+                }
+            }
+            return i;
         }
     }
 }

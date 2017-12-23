@@ -20,7 +20,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             if (p.Alfa.Size != 2) throw new System.Exception("Error run method Powell: size alfa != 2");
 
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
+            if (NormalizationDirections && cP.P.Norma > 1.0)
             {
                 cP.P = cP.P.Rationing();
             }

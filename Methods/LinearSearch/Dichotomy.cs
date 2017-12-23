@@ -19,7 +19,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             if (p.Alfa.Size != 2) throw new Exception("Дихотомия ошибка: интервал минимизации состоит не из двух точек");
             f = p.Y;
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
+            if (NormalizationDirections && cP.P.Norma > 1.0)
             {
                 cP.P = cP.P.Rationing();
             }

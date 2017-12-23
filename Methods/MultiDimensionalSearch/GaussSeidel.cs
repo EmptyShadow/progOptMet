@@ -34,7 +34,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                     {
                         result.ListP[i - 1] = -Functions.Math.GF(f, result.ListX[i - 1])[i - 1] * Vector.GetZeroBeside(n, i - 1);
                     }
-                    if (NormalizationDirections)
+                    if (NormalizationDirections && result.ListP[i - 1].Norma > 1.0)
                     {
                         result.ListP[i - 1] = result.ListP[i - 1].Rationing();
                     }

@@ -19,7 +19,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
         {
             // Копирую входные данные
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
+            if (NormalizationDirections && cP.P.Norma > 1.0)
             {
                 cP.P = cP.P.Rationing();
             }
@@ -36,8 +36,8 @@ namespace MethodsOptimization.src.Methods.LinearSearch
 
             // Устанавливаем две точки интервала в ноль
             result.Alfas = new Vector();
-            double q = 2 * f.Parse(x1) / Math.GF(f, x1, P);
-            result.Alfas.Push((System.Math.Abs(q) < 1.0) ? q : 1.0);
+            //double q = 2 * f.Parse(x1) / Math.GF(f, x1, P);
+            result.Alfas.Push(/*(System.Math.Abs(q) < 1.0) ? q : */1.0);
             result.Alfas.Push(0.0);
 
             // меняем направление если функция возрастает
@@ -59,7 +59,9 @@ namespace MethodsOptimization.src.Methods.LinearSearch
                 fk = f.Parse(x1);
                 fkp = f.Parse(x2);
                 // проверяем критерий окончания поиска
-                if (fd_kp * fd_k < 0.0 || fkp > fk)
+                if (fd_kp * fd_k < 0.0 || 
+                    fkp > fk ||
+                    Lim.CheckMinEps(result.Alfas[0], result.Alfas[1]))
                 {
                     // Если знаки разные, остановка
                     break;

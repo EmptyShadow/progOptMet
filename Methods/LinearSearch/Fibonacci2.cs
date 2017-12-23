@@ -17,7 +17,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             // устанавливаем функцию
             f = p.Y;
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
+            if (NormalizationDirections && cP.P.Norma > 1.0)
             {
                 cP.P = cP.P.Rationing();
             }

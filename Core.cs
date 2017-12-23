@@ -41,6 +41,9 @@ namespace MethodsOptimization.src
             MGD.Add(new MethodСonjugateGradient());
             MGD.Add(new Partan3());
             MGD.Add(new NewtonGeneralizedMethod());
+            MGD.Add(new MethodWithVariableMetric());
+            MGD.Add(new HookeJeeves());
+            MGD.Add(new Powell3());
 
             Methods = new Composite("Методы");
             Methods.Add(MDS);

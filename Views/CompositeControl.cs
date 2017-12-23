@@ -152,10 +152,6 @@ namespace MethodsOptimization.src.Views
                     {
                         param.P = data.P;
                     }
-                    else
-                    {
-                        param.P = Vector.random(data.Function.Vars.Count, 10);
-                    }
                     Result result = composite.Run(param);
                     /*if (result != null)
                     {

@@ -21,10 +21,6 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
         {
             if (MethodsUsed == null) throw new System.Exception("Ошибка метода " + Name + ": не определены методы, которые будет использованны");
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
-            {
-                cP.P = cP.P.Rationing();
-            }
             Result result = cP.ToResult();
             result.ListP.Clear();
             // устанавливаем функцию
@@ -39,7 +35,7 @@ namespace MethodsOptimization.src.Methods.MultiDimensionalSearch
                 pSerch.H = cP.H;
                 // получаю направление
                 pSerch.P = -Functions.Math.GF(cP.Y, pSerch.X0);
-                if (NormalizationDirections)
+                if (NormalizationDirections && pSerch.P.Norma > 1.0)
                 {
                     pSerch.P = pSerch.P.Rationing();
                 }

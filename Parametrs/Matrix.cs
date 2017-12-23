@@ -441,5 +441,47 @@ namespace MethodsOptimization.src.Parametrs
             }
             return newMatrix;
         }
+
+        /// <summary>
+        /// Преобразовать вектор в столбец матрицы
+        /// </summary>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static Matrix ToMatrixColumn(Vector column)
+        {
+            Matrix matrix = new Matrix(column.Size, 1);
+            for(int i = 0; i < column.Size; i++)
+            {
+                matrix[i, 0] = column[i];
+            }
+            return matrix;
+        }
+
+        /// <summary>
+        /// Преобразовать вектор в строку матрицы
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public static Matrix ToMatrixRow(Vector row)
+        {
+            Matrix matrix = new Matrix(1, row.Size);
+            matrix[0] = (Vector)row.Clone();
+            return matrix;
+        }
+
+        /// <summary>
+        /// Получить единичную матрицу
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static Matrix GetIdentity(int n)
+        {
+            Matrix matrix = new Matrix(n, n);
+            for (int i = 0; i < n; i++)
+            {
+                matrix[i, i] = 1;
+            }
+            return matrix;
+        }
     }
 }

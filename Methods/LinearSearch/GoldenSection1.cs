@@ -21,7 +21,7 @@ namespace MethodsOptimization.src.Methods.LinearSearch
             if (p.Alfa.Size != 2) throw new Exception("Ошибка метода " + Name + ": интервал локализации не состоит из двух чисел во входных данных");
 
             Params cP = (Params)p.Clone();
-            if (NormalizationDirections)
+            if (NormalizationDirections && cP.P.Norma > 1.0)
             {
                 cP.P = cP.P.Rationing();
             }
